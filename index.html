@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--Kommentar -->
 <html>
     <head>
         <title>Chatroom</title>
@@ -13,17 +12,18 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container-fluid" >
             <div class="row" style="margin-top: 10vh;">
                 <div class="col-2">
                     
                 </div>
-                <div class="col-8 mx-auto HeaderDiv p-3" >
-                    <div class="Header">
+                <div class="col-8 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
+                    <div class="Header p-4">
                         <h1 class="text-center">Realtime Chatroom</h1>
+                        <p class="text-center">A bad, unreliable und unsafe way of communication</p>
                     </div>
                     <div class="Chatarea">
-                        <div class="col-6 mx-auto">
+                        <div class="col-6 mx-auto pt-3">
                             <ul id="messages">
                                 <li>test</li>
                                 <li>test</li>
@@ -45,12 +45,11 @@
                                 <li>test</li>
                                 <li>test</li>
                                 <li>test</li>
-
                             </ul>
                         </div>
                         <!-- Chatinput -->
                         <div class="row" >
-                            <div class="col-8 mx-auto fixed-bottom" style="background-color: #222;">
+                            <div class="col-8 mx-auto fixed-bottom formBackground">
                                 <div class="col-6 mx-auto ">
                                     <form id="form" action="">
                                         <input id="input" autocomplete="off" /><button>Send</button>
@@ -63,36 +62,33 @@
                 <div class="col-2">
 
                 </div>
-                
             </div>
-
-            
         </div>
         
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
-  var socket = io();
+            var socket = io();
 
-  var messages = document.getElementById('messages');
-  var form = document.getElementById('form');
-  var input = document.getElementById('input');
+            var messages = document.getElementById('messages');
+            var form = document.getElementById('form');
+            var input = document.getElementById('input');
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (input.value) {
-      socket.emit('chat message', input.value);
-      input.value = '';
-    }
-  });
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (input.value) {
+                socket.emit('chat message', input.value);
+                input.value = '';
+                }
+            });
 
-  socket.on('chat message', function(msg) {
-    var item = document.createElement('li');
-    item.textContent = msg;
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-  });
-</script>
+            socket.on('chat message', function(msg) {
+                var item = document.createElement('li');
+                item.textContent = msg;
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+        </script>
         <!-- Bootstrap scripts -->
         <scrips src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
