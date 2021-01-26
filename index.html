@@ -23,12 +23,12 @@
                     </div>
                     <div class="Chatarea">
                         <div class="col-6 mx-auto">
-                            <ul>
-                                <li>Hi</li>
-                                <li>Hallo</li>
-                                <li>Wie gehts?</li>
-                                <li>Gut und dir?</li>
+                            <ul id="messages">
+
                             </ul>
+                            <form id="form" action="">
+                                <input id="input" autocomplete="off" /><button>Send</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,23 @@
                 </div>
             </div>
         </div>
+        
 
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+        var socket = io();
+
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (input.value) {
+            socket.emit('chat message', input.value);
+            input.value = '';
+            }
+        });
+        </script>
 
         <!-- Bootstrap scripts -->
         <scrips src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
