@@ -21,11 +21,11 @@ body {
 .HeaderDiv {
     background-color: #333;
     color:white;
-    height: 85vh;
+    height: 100%;
 }
 
 #form { 
-    background: #333; 
+    background: #222; 
     padding: 0.25rem;
     display: flex; 
     height: 3rem; 
