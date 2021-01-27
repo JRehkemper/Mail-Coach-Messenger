@@ -66,16 +66,12 @@
                 }
             });
 
-            socket.on('test', function(data) {
-                console.log("test recieved", data);
-            });
-
             socket.on('chat message', function(msg) {
                 console.log("client: ", msg);
                 var item = document.createElement('li');
                 item.textContent = msg;
                 messages.appendChild(item);
-                //window.scrollTo(0, document.body.scrollHeight);
+                window.scrollTo(0, document.body.scrollHeight);
             });
         </script>
     </body>
