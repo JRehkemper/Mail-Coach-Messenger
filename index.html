@@ -73,7 +73,7 @@
         <script src="/socket.io/socket.io.js"></script>
         <script>
   var socket = io();
-
+var path = require('path')
   var messages = document.getElementById('messages');
   var form = document.getElementById('form');
   var input = document.getElementById('input');
@@ -91,6 +91,8 @@
     item.textContent = msg;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
+
+app.use(express.static(path.join(__dirname, 'public')));
   });
 </script>
         <!-- Bootstrap scripts -->
