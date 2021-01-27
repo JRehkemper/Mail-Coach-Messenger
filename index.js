@@ -49,6 +49,8 @@ http.listen(3000, () => {
 
 io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
+    io.emit('chat massage', msg);
+    console.log('chat message: ' + msg);
+    
   });
 });
