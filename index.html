@@ -19,7 +19,7 @@
                     
                 </div>
                 <div class="col-8 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
-                    <div class="Header p-4">
+                    <div class="Header p-4 sticky-top">
                         <h1 class="text-center">Realtime Chatroom</h1>
                         <p class="text-center">A bad, unreliable und unsafe way of communication</p>
                     </div>
@@ -66,12 +66,31 @@
                 }
             });
 
+            socket.on('connection', function() {
+                var item = document.createElement('li');
+                item.textContent = "User joind the Chat";
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+                var audio = new Audio('sound/messageSound.mp3');
+                audio.play();
+            })
+
+            socket.on('disconnect', function() {
+                var item = document.createElement('li');
+                item.textContent = "User left the Chat";
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+                var audio = new Audio('sound/messageSound.mp3');
+                audio.play();
+            })
+
             socket.on('chat message', function(msg) {
-                console.log("client: ", msg);
                 var item = document.createElement('li');
                 item.textContent = msg;
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
+                var audio = new Audio('sound/messageSound.mp3');
+                audio.play();
             });
         </script>
     </body>
