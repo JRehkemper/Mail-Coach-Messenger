@@ -6,11 +6,12 @@
         <meta name="description" content="The HTML5 Herald">
         <meta name="author" content="SitePoint">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="./style.css">
+        <link  type="text/css" href="css/style.css">
 
         <!-- Bootstrap css-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </head>
+    
     <body>
         <div class="container-fluid" >
             <div class="row" style="margin-top: 10vh;">
@@ -25,26 +26,7 @@
                     <div class="Chatarea">
                         <div class="col-6 mx-auto pt-3">
                             <ul id="messages">
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
-                                <li>test</li>
+
                             </ul>
                         </div>
                         <!-- Chatinput -->
@@ -65,7 +47,8 @@
             </div>
         </div>
         
-
+        <scrips src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js" integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA==" crossorigin="anonymous"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
             var socket = io();
@@ -90,7 +73,7 @@
             });
         </script>
         <!-- Bootstrap scripts -->
-        <scrips src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
