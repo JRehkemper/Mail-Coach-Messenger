@@ -1,0 +1,96 @@
+/*Color Look-Up Table*/
+:root {
+    --color1: #2C4B85;
+    --color2: #333E52;
+    --color3: #132038;
+    --color4: #546585;
+    --color5: #0E182B;
+    --color6: #0b1322;
+}
+
+
+* {
+    margin:0;
+    padding:0;
+}
+
+html {
+    font-size: 20px;
+}
+
+body { 
+    margin: 0; 
+    padding-bottom: 3rem; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    background: rgb(14,24,43);
+    background: linear-gradient(70deg, rgba(14,24,43,1) 0%, rgba(44,75,133,1) 50%, rgba(14,24,43,1) 100%);
+}
+
+.inputArea {
+    position: absolute;
+    bottom: 0;
+}
+
+
+.HeaderDiv {
+    background-color: var(--color6);
+    color:white;
+    height: 100%;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+.Header {
+    background-color: var(--color5);
+    border-radius: 1em;
+}
+
+#form { 
+    background: var(--color5); 
+    padding: 0.25rem;
+    display: flex; 
+    height: 3rem; 
+    box-sizing: border-box; 
+    backdrop-filter: blur(10px); 
+}
+
+.formBackground {
+    background-color: var(--color5); 
+    box-shadow: 0px 0px 2em 5px #111;
+}
+      
+#input { 
+    border: none; 
+    padding: 0 1rem; 
+    flex-grow: 1; 
+    border-radius: 2rem; 
+    margin: 0.25rem; 
+}
+      
+#input:focus { 
+    outline: none; 
+}
+      
+#form > button { 
+    background:var(--color6); 
+    border: none;
+    padding: 0 1rem; 
+    margin: 0.25rem; 
+    border-radius: 3px; 
+    outline: none; 
+    color: #fff; 
+}
+
+#messages { 
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0; 
+    
+}
+      
+#messages > li { 
+    padding: 0.5rem 1rem; 
+    background-color: var(--color2);
+    border-radius: 8px;
+    margin:1em;
+}
