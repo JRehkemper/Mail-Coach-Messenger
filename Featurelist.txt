@@ -1,0 +1,7 @@
+Mögliche Erweiterungen
+
+- Eigene Chatrooms
+- Passwort schutz
+- Name bei Nachrichten
+- Chat exportieren als csv oder ähnlichem
+- responsive design
