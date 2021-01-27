@@ -53,6 +53,8 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
+            var audio = new Audio('sound/messageSound.mp3');
+            audio.volume = 0.2;
             var socket = io();
             var messages = document.getElementById('messages');
             var form = document.getElementById('form');
@@ -71,7 +73,6 @@
                 item.textContent = "User joind the Chat";
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
-                var audio = new Audio('sound/messageSound.mp3');
                 audio.play();
             })
 
@@ -80,7 +81,6 @@
                 item.textContent = "User left the Chat";
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
-                var audio = new Audio('sound/messageSound.mp3');
                 audio.play();
             })
 
@@ -89,7 +89,6 @@
                 item.textContent = msg;
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
-                var audio = new Audio('sound/messageSound.mp3');
                 audio.play();
             });
         </script>
