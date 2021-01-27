@@ -57,19 +57,11 @@
         <script src="./js/bootstrap.js"></script>-->
         <script src="/socket.io/socket.io.js"></script>
         <script>
-<<<<<<< HEAD
-  var socket = io();
-var path = require('path')
-  var messages = document.getElementById('messages');
-  var form = document.getElementById('form');
-  var input = document.getElementById('input');
-=======
             var socket = io();
-
+            //var path = require('path')
             var messages = document.getElementById('messages');
             var form = document.getElementById('form');
             var input = document.getElementById('input');
->>>>>>> 99a206172666d7fc37c51ee962d46a23d4e021b0
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -79,28 +71,17 @@ var path = require('path')
                 }
             });
 
-<<<<<<< HEAD
-  socket.on('chat message', function(msg) {
-    var item = document.createElement('li');
-    item.textContent = msg;
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-
-app.use(express.static(path.join(__dirname, 'public')));
-  });
-</script>
-        <!-- Bootstrap scripts -->
-        <scrips src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-=======
             socket.on('chat message', function(msg) {
                 var item = document.createElement('li');
                 item.textContent = msg;
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
+
+            app.use(express.static(path.join(__dirname, 'public')));
             });
         </script>
-        
->>>>>>> 99a206172666d7fc37c51ee962d46a23d4e021b0
+        <!-- Bootstrap scripts -->
+        <scrips src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
