@@ -25,7 +25,7 @@
                     </div>
                     <div class="Chatarea">
                         <div class="col-6 mx-auto pt-3">
-                            <ul id="messages">
+                            <ul id="messages" style="min-height: 65vh;">
 
                             </ul>
                         </div>
@@ -66,11 +66,16 @@
                 }
             });
 
+            socket.on('test', function(data) {
+                console.log("test recieved", data);
+            });
+
             socket.on('chat message', function(msg) {
+                console.log("client: ", msg);
                 var item = document.createElement('li');
                 item.textContent = msg;
                 messages.appendChild(item);
-                window.scrollTo(0, document.body.scrollHeight);
+                //window.scrollTo(0, document.body.scrollHeight);
             });
         </script>
     </body>

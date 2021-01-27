@@ -10,17 +10,19 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', (socket) => {
+/*io.on('connection', (socket) => {
   console.log('a user connected');
-});
+});*/
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
 });
 
 io.on('connection', (socket) => {
+  console.log('a user connected');
   socket.on('chat message', (msg) => {
-    io.emit('chat massage', msg);
+    io.emit('chat message', msg);
+    io.emit('test', "hallo");
     console.log('chat message: ' + msg);
     
   });
