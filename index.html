@@ -6,12 +6,12 @@
         <meta name="description" content="The HTML5 Herald">
         <meta name="author" content="SitePoint">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+        <link type="text/css" rel="stylesheet" href="/css/style.css">
 
         <!-- Bootstrap css-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <!--<link type="text/css" href="./css/bootstrap.min.css">-->
-        <link type="text/css" href="css/style.css">
+        
     </head>
     
     <body>
@@ -77,11 +77,12 @@
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
 
-            app.use(express.static(path.join(__dirname, 'public')));
+            //app.use(express.static(path.join(__dirname, 'public')));
+            //app.use(express.static('public'));
             });
         </script>
         <!-- Bootstrap scripts -->
-        <scrips src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+        <!--<scrips src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>-->
     </body>
 </html>
