@@ -27,8 +27,8 @@ io.on('connection', (socket) => {
     usercount--;
     io.emit('usercount', usercount);
   })
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+  socket.on('chat message', (msg, username) => {
+    io.emit('chat message', msg, username);
     console.log('chat message: ' + msg);
   });
   

@@ -13,6 +13,9 @@
     </head>
     
     <body>
+        <script>
+            var username = prompt('Enter a Username:', '');
+        </script>
         <div class="container-fluid" >
             <div class="row" style="margin-top: 10vh;">
                 <div class="col-2 d-none d-sm-none d-md-none">
@@ -66,7 +69,7 @@
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 if (input.value) {
-                    socket.emit('chat message', input.value);
+                    socket.emit('chat message', input.value, username);
                     input.value = '';
                 }
             });
@@ -87,9 +90,9 @@
                 audio.play();
             })
 
-            socket.on('chat message', function(msg) {
+            socket.on('chat message', function(msg, username) {
                 var item = document.createElement('li');
-                item.textContent = msg;
+                item.textContent = username+": "+msg;
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
                 audio.play();
