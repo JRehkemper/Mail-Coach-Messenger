@@ -7,6 +7,7 @@
         <meta name="Bigosigos.de & JRehkemper.de" content="SitePoint">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link type="text/css" rel="stylesheet" href="/css/style.css">
+        <link rel="shortcut icon" type="image/x-icon" href="/img/chat.svg">
 
         <!-- Bootstrap css-->
         <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">      
@@ -121,17 +122,11 @@
                 item.textContent = pusername+": "+msg;
                 messages.appendChild(item);
                 anime({
-                    targets: 'li',
-                    translateY: -50,
+                    targets: document.getElementById('messages').lastElementChild,
+                    translateY: [50, 0],
+                    opacity: [0, 1],
                 });
-                window.scrollTo(0, document.body.scrollHeight);
-                /*var offset = element.getBoundingClientRect().top
-                anime({
-                    targets: [document.documentElement, document.body],
-                    bottom: 0,
-                    duration: 500,
-                    easing: 'easeInOutQuad'
-                });*/
+                $('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
                 if(username != pusername)
                 {
                 audio.play();
