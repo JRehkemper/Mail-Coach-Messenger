@@ -41,7 +41,6 @@
                     <div class="Chatarea">
                         <div class="col-lg-10 col-xl-8 mx-auto pt-3">
                             <ul id="messages" style="min-height: 45vh;">
-
                             </ul>
                         </div>
                         <!-- Chatinput -->
@@ -70,6 +69,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js" integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA==" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous"></script>
         <script>
             var audio = new Audio('sound/messageSound.mp3');
             audio.volume = 0.2;
@@ -78,6 +78,7 @@
             var form = document.getElementById('form');
             var input = document.getElementById('input');
             var usercountId = document.getElementById('usercountID');
+
             
             if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
                 console.info( "This page is reloaded" );
@@ -119,7 +120,18 @@
                 var item = document.createElement('li');
                 item.textContent = pusername+": "+msg;
                 messages.appendChild(item);
+                anime({
+                    targets: 'li',
+                    translateY: -50,
+                });
                 window.scrollTo(0, document.body.scrollHeight);
+                /*var offset = element.getBoundingClientRect().top
+                anime({
+                    targets: [document.documentElement, document.body],
+                    bottom: 0,
+                    duration: 500,
+                    easing: 'easeInOutQuad'
+                });*/
                 if(username != pusername)
                 {
                 audio.play();
