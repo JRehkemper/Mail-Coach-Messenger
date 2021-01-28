@@ -15,33 +15,34 @@
     <body>
         <div class="container-fluid" >
             <div class="row" style="margin-top: 10vh;">
-                <div class="col-2">
+                <div class="col-2 d-none d-sm-none d-md-none">
                     
                 </div>
-                <div class="col-8 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
+                <div class="col-lg-8 col-xl-8 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
                     <div class="Header p-4 sticky-top">
                         <h1 class="text-center">Realtime Chatroom</h1>
                         <p class="text-center">A bad, unreliable und unsafe way of communication</p>
+                        <!--<p class="text-center" id="usercountId">Users</p>-->
                     </div>
                     <div class="Chatarea">
-                        <div class="col-6 mx-auto pt-3">
+                        <div class="col-lg-10 col-xl-8 mx-auto pt-3">
                             <ul id="messages" style="min-height: 65vh;">
 
                             </ul>
                         </div>
                         <!-- Chatinput -->
                         <div class="row" >
-                            <div class="col-8 mx-auto fixed-bottom formBackground">
-                                <div class="col-6 mx-auto ">
+                            <div class="col-12 col-lg-8 col-xl-8 mx-auto fixed-bottom formBackground">
+                                <div class="col-12 col-lg-10 col-xl-8 mx-auto ">
                                     <form id="form" action="">
-                                        <input id="input" autocomplete="off" /><button>Send</button>
+                                        <input class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off" /><button class="col-3 col-lg-3 col-xl-2 text-center">Send</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-2 d-none d-sm-none d-md-none">
 
                 </div>
             </div>
@@ -59,6 +60,8 @@
             var messages = document.getElementById('messages');
             var form = document.getElementById('form');
             var input = document.getElementById('input');
+            var usercountId = document.getElementById('usercountID');
+            
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -76,7 +79,7 @@
                 audio.play();
             })
 
-            socket.on('disconnect', function() {
+            socket.on('disconnected', function() {
                 var item = document.createElement('li');
                 item.textContent = "User left the Chat";
                 messages.appendChild(item);
@@ -91,6 +94,10 @@
                 window.scrollTo(0, document.body.scrollHeight);
                 audio.play();
             });
+
+            /*socket.on('usercount', function(usercount) {
+                document.getElementById('usercountId').innerHTML = "Connected User: " + usercount;
+            });*/
         </script>
     </body>
 </html>
