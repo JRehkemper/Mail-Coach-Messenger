@@ -27,6 +27,12 @@ io.on('connection', (socket) => {
     usercount--;
     io.emit('usercount', usercount);
   })
+  /*socket.on('refresh', (socket) => {
+    console.log('a user left');
+    io.emit('disconnected');
+    usercount--;
+    io.emit('usercount', usercount);
+  });*/
   socket.on('chat message', (msg, username) => {
     io.emit('chat message', msg, username);
     console.log('chat message: ' + msg);

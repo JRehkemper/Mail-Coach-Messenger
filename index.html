@@ -73,12 +73,16 @@
         <script>
             var audio = new Audio('sound/messageSound.mp3');
             audio.volume = 0.2;
-            var socket = io({transports: ['websocket'], upgrade: false});
+            var socket = io();
             var messages = document.getElementById('messages');
             var form = document.getElementById('form');
             var input = document.getElementById('input');
             var usercountId = document.getElementById('usercountID');
             
+            if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+                console.info( "This page is reloaded" );
+                socket.emit('refresh');
+            }
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -88,12 +92,12 @@
                 }
             });
 
-            document.getElementById('input').addEventListener('input', function(evt) {
+            /*document.getElementById('input').addEventListener('input', function(evt) {
               
                 socket.emit('typing', username);
                 console.log("typing");
                 
-            });
+            });*/
 
             socket.on('connection', function(pusername) {
                 var item = document.createElement('li');
@@ -122,10 +126,10 @@
                 }
             });
 
-            socket.on('typing', function(pusername) {
+            /*socket.on('typing', function(pusername) {
                 console.log(pusername + "is typing");
                 document.getElementById('typing').innerHTML = "is typing a message";
-            });
+            });*/
 
             socket.on('usercount', function(usercount) {
                 document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
