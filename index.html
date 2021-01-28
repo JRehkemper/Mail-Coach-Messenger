@@ -14,7 +14,11 @@
     
     <body>
         <script>
-            var username = prompt('Enter a Username:', '');
+            var username = "";
+            while(username == "")
+            {
+                username = prompt('Enter a Username:', '');
+            }
         </script>
         <div class="container-fluid" >
             <div class="row" style="margin-top: 10vh;">
@@ -76,7 +80,7 @@
 
             socket.on('connection', function() {
                 var item = document.createElement('li');
-                item.textContent = "User joind the Chat";
+                item.textContent = "User joined the Chat";
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
                 audio.play();
@@ -90,12 +94,15 @@
                 audio.play();
             })
 
-            socket.on('chat message', function(msg, username) {
+            socket.on('chat message', function(msg, pusername) {
                 var item = document.createElement('li');
-                item.textContent = username+": "+msg;
+                item.textContent = pusername+": "+msg;
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
+                if(username != pusername)
+                {
                 audio.play();
+                }
             });
 
             /*socket.on('usercount', function(usercount) {
