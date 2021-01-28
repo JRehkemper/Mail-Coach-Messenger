@@ -45,6 +45,11 @@ body {
     border-radius: 1em;
 }
 
+.Channel {
+    background-color: var(--color5);
+    border-radius: 1em;
+}
+
 #form { 
     background: var(--color5); 
     padding: 0.25rem;

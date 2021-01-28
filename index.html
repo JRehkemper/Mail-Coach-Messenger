@@ -3,8 +3,8 @@
     <head>
         <title>Chatroom</title>
         <meta charset="utf-8">
-        <meta name="description" content="The HTML5 Herald">
-        <meta name="author" content="SitePoint">
+        <meta name="Realtime Chatroom Application" content="Realtime Chatroom Application">
+        <meta name="Bigosigos.de & JRehkemper.de" content="SitePoint">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link type="text/css" rel="stylesheet" href="/css/style.css">
 
@@ -26,20 +26,30 @@
                     
                 </div>
                 <div class="col-lg-8 col-xl-8 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
-                    <div class="Header p-4 sticky-top">
+                    <div class="Header pt-3 pb-1">
                         <h1 class="text-center">Realtime Chatroom</h1>
                         <p class="text-center">A bad, unreliable und unsafe way of communication</p>
-                        <!--<p class="text-center" id="usercountId">Users</p>-->
+                        <hr>
+                        <p class="text-center">Just enter a message and start chatting</p>
+                        <p class="text-center" style="font-size: 0.7em;">By using this Chatroom you agree to our <a href="javascript:alert('This is a public Chatroom. Please be aware that everybody can read this.\nThe Messages might be logged on the Server to enhance the User experience. We will not pass this data to others or use it for commercial purposes.')">Terms of use</a>.</p>
+                        
+                    </div>
+                    <div class="Channel pt-1 mt-1 sticky-top">
+                        <h5 class="text-center p-1">Main Channel - Everybody can read and write</h5>
+                        <p class="text-center p-1" id="usercountId">Users</p>
                     </div>
                     <div class="Chatarea">
                         <div class="col-lg-10 col-xl-8 mx-auto pt-3">
-                            <ul id="messages" style="min-height: 65vh;">
+                            <ul id="messages" style="min-height: 45vh;">
 
                             </ul>
                         </div>
                         <!-- Chatinput -->
                         <div class="row" >
                             <div class="col-12 col-lg-8 col-xl-8 mx-auto fixed-bottom formBackground">
+                                <div class="col-12 col-lg-10 col-xl-8">
+                                    <p id="typing"></p>
+                                </div>
                                 <div class="col-12 col-lg-10 col-xl-8 mx-auto ">
                                     <form id="form" action="">
                                         <input class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off" /><button class="col-3 col-lg-3 col-xl-2 text-center">Send</button>
@@ -63,7 +73,7 @@
         <script>
             var audio = new Audio('sound/messageSound.mp3');
             audio.volume = 0.2;
-            var socket = io();
+            var socket = io({transports: ['websocket'], upgrade: false});
             var messages = document.getElementById('messages');
             var form = document.getElementById('form');
             var input = document.getElementById('input');
@@ -78,21 +88,28 @@
                 }
             });
 
-            socket.on('connection', function() {
+            document.getElementById('input').addEventListener('input', function(evt) {
+              
+                socket.emit('typing', username);
+                console.log("typing");
+                
+            });
+
+            socket.on('connection', function(pusername) {
                 var item = document.createElement('li');
                 item.textContent = "User joined the Chat";
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
                 audio.play();
-            })
+            });
 
-            socket.on('disconnected', function() {
+            socket.on('disconnected', function(pusername) {
                 var item = document.createElement('li');
                 item.textContent = "User left the Chat";
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
                 audio.play();
-            })
+            });
 
             socket.on('chat message', function(msg, pusername) {
                 var item = document.createElement('li');
@@ -105,9 +122,14 @@
                 }
             });
 
-            /*socket.on('usercount', function(usercount) {
-                document.getElementById('usercountId').innerHTML = "Connected User: " + usercount;
-            });*/
+            socket.on('typing', function(pusername) {
+                console.log(pusername + "is typing");
+                document.getElementById('typing').innerHTML = "is typing a message";
+            });
+
+            socket.on('usercount', function(usercount) {
+                document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
+            });
         </script>
     </body>
 </html>
