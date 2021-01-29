@@ -17,15 +17,16 @@ http.listen(3000, () => {
 });
 
 io.on('connection', (socket) => {
+  socket.join("main");
   console.log('a user connected');
-  io.emit('connection');
+  io.sockets.in("main").emit('connection');
   usercount++;
-  io.emit('usercount', usercount);
+  io.sockets.in("main").emit('usercount', usercount);
   socket.on('disconnect', (socket) => {
     console.log('a user left');
-    io.emit('disconnected');
+    io.sockets.in("main").emit('disconnected');
     usercount--;
-    io.emit('usercount', usercount);
+    io.sockets.in("main").emit('usercount', usercount);
   })
   /*socket.on('refresh', (socket) => {
     console.log('a user left');
@@ -34,7 +35,7 @@ io.on('connection', (socket) => {
     io.emit('usercount', usercount);
   });*/
   socket.on('chat message', (msg, username) => {
-    io.emit('chat message', msg, username);
+    io.sockets.in("main").emit('chat message', msg, username);
     console.log('chat message: ' + msg);
   });
   
