@@ -171,12 +171,19 @@
             socket.on('chat message', function(msg, pusername) {
                 var item = document.createElement('li');
                 item.textContent = pusername+": "+msg;
+                if (pusername == username) {
+                    item.className = "text-right ownMessage";
+                }
+                else {
+                    item.className = "text-left otherMessage";
+                }
                 messages.appendChild(item);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
                     translateY: [50, 0],
                     opacity: [0, 1],
                 });
+
                 //if(loading != true) {
                     $('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
                 //};
