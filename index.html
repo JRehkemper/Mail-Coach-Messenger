@@ -20,39 +20,40 @@
             {
                 username = prompt('Enter a Username:', '');
             }
+            var loading = true;
         </script>
-        <div class="container-fluid" >
+        <div class="container-fluid" id="MainWrapper">
             <div class="row" style="margin-top: 10vh;">
                 <div class="col-2 d-none d-sm-none d-md-none">
                     
                 </div>
                 <div class="col-lg-8 col-xl-8 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
                     <div class="Header pt-3 pb-1">
-                        <h1 class="text-center">Realtime Chatroom</h1>
-                        <p class="text-center">A bad, unreliable und unsafe way of communication</p>
+                        <h1 class="text-center HeaderM">Realtime Chatroom</h1>
+                        <p class="text-center HeaderM">A bad, unreliable und unsafe way of communication</p>
                         <hr>
-                        <p class="text-center">Just enter a message and start chatting</p>
-                        <p class="text-center" style="font-size: 0.7em;">By using this Chatroom you agree to our <a href="javascript:alert('This is a public Chatroom. Please be aware that everybody can read this.\nThe Messages might be logged on the Server to enhance the User experience. We will not pass this data to others or use it for commercial purposes.')">Terms of use</a>.</p>
+                        <p class="text-center HeaderM">Just enter a message and start chatting</p>
+                        <p class="text-center HeaderM" style="font-size: 0.7em;">By using this Chatroom you agree to our <a href="javascript:alert('This is a public Chatroom. Please be aware that everybody can read this.\nThe Messages might be logged on the Server to enhance the User experience. We will not pass this data to others or use it for commercial purposes.')">Terms of use</a>.</p>
                         
                     </div>
                     <div class="Channel pt-1 mt-1 sticky-top">
-                        <h5 class="text-center p-1">Main Channel - Everybody can read and write</h5>
-                        <p class="text-center p-1" id="usercountId">Users</p>
+                        <h5 class="text-center p-1 ChannelM">Main Channel - Everybody can read and write</h5>
+                        <p class="text-center p-1 ChannelM" id="usercountId">Users</p>
                     </div>
                     <div class="Chatarea">
-                        <div class="col-lg-10 col-xl-8 mx-auto pt-3">
+                        <div class="col-lg-10 col-xl-8 mx-auto pt-3 ChatMessages">
                             <ul id="messages" style="min-height: 45vh;">
                             </ul>
                         </div>
                         <!-- Chatinput -->
-                        <div class="row" >
+                        <div class="row ChatInput" >
                             <div class="col-12 col-lg-8 col-xl-8 mx-auto fixed-bottom formBackground">
                                 <div class="col-12 col-lg-10 col-xl-8">
                                     <p id="typing"></p>
                                 </div>
                                 <div class="col-12 col-lg-10 col-xl-8 mx-auto ">
                                     <form id="form" action="">
-                                        <input class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off" /><button class="col-3 col-lg-3 col-xl-2 text-center">Send</button>
+                                        <input class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off" autofocus/><button class="col-3 col-lg-3 col-xl-2 text-center">Send</button>
                                     </form>
                                 </div>
                             </div>
@@ -79,8 +80,58 @@
             var form = document.getElementById('form');
             var input = document.getElementById('input');
             var usercountId = document.getElementById('usercountID');
-
             
+
+            anime({
+                targets: '#MainWrapper',
+                opacity: [0, 1],
+                duration: 2000,
+            });
+            anime({
+                targets: '.Header',
+                opacity: [0, 1],
+                duration: 2000,
+                delay: 300,
+            });
+            anime({
+                targets: '.HeaderM',
+                opacity: [0, 1],
+                duration: 2000,
+                delay: function(HeaderM, i=100, l) {
+                    return 300 + i * 200;
+                },
+            });
+            anime({
+                targets: '.Channel',
+                opacity: [0, 1],
+                duration: 2000,
+                delay: 600,
+            });
+            anime({
+                targets: '.ChannelM',
+                opacity: [0, 1],
+                duration: 2000,
+                delay: function(ChannelM, i=100, l) {
+                    return 1000 + i * 200;
+                },
+            });
+            anime({
+                targets: 'li',
+                opacity: [0, 1],
+                duration: 2000,
+                delay: function(li, i=100, l) {
+                    return 1300 + i * 200;
+                },
+            });
+            anime({
+                targets: '.ChatInput',
+                opacity: [0, 1],
+                duration: 2000,
+                delay: 900,
+            });
+
+            loading = false;
+
             if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
                 console.info( "This page is reloaded" );
                 socket.emit('refresh');
@@ -126,7 +177,9 @@
                     translateY: [50, 0],
                     opacity: [0, 1],
                 });
-                $('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
+                //if(loading != true) {
+                    $('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
+                //};
                 if(username != pusername)
                 {
                 audio.play();
