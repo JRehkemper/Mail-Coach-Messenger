@@ -28,18 +28,29 @@ io.on('connection', (socket) => {
     usercount--;
     io.sockets.in("main").emit('usercount', usercount);
   })
+  
   /*socket.on('refresh', (socket) => {
     console.log('a user left');
     io.emit('disconnected');
     usercount--;
     io.emit('usercount', usercount);
   });*/
+
   socket.on('chat message', (msg, username) => {
     io.sockets.in("main").emit('chat message', msg, username);
     console.log('chat message: ' + msg);
   });
+
+  socket.on('newRoomCreate', (roomName) => {
+    socket.leave("main");
+    socket.join(roomName);
+    io.socket.in(roomName).emit('connection');
+  });
   
 });
+
+
+
 
 
 
