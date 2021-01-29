@@ -156,6 +156,11 @@
                 var item = document.createElement('li');
                 item.textContent = "User joined the Chat";
                 messages.appendChild(item);
+                anime({
+                    targets: document.getElementById('messages').lastElementChild,
+                    translateY: [50, 0],
+                    opacity: [0, 1],
+                });
                 window.scrollTo(0, document.body.scrollHeight);
                 audio.play();
             });
@@ -164,6 +169,11 @@
                 var item = document.createElement('li');
                 item.textContent = "User left the Chat";
                 messages.appendChild(item);
+                anime({
+                    targets: document.getElementById('messages').lastElementChild,
+                    translateY: [50, 0],
+                    opacity: [0, 1],
+                });
                 window.scrollTo(0, document.body.scrollHeight);
                 audio.play();
             });
@@ -172,15 +182,27 @@
                 var item = document.createElement('li');
                 item.textContent = pusername+": "+msg;
                 if (pusername == username) {
-                    item.className = "text-right ownMessage";
+                    item.className = "text-left ownMessage";
                 }
                 else {
                     item.className = "text-left otherMessage";
                 }
                 messages.appendChild(item);
-                anime({
+                /*anime({
                     targets: document.getElementById('messages').lastElementChild,
                     translateY: [50, 0],
+                    opacity: [0, 1],
+                });*/
+                anime({
+                    targets: document.querySelectorAll(".ownMessage:last-child"),
+                    translateX: [50, 0],
+                    translateY: [0, 0],
+                    opacity: [0, 1],
+                });
+                anime({
+                    targets: document.querySelectorAll(".otherMessage:last-child"),
+                    translateX: [-50, 0],
+                    translateY: [0, 0],
                     opacity: [0, 1],
                 });
 
