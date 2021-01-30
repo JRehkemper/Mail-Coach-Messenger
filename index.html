@@ -15,13 +15,35 @@
     
     <body>
         <script>
+            //Cookies
+            function readCookie(name) {
+                var nameEQ = name + "=";
+                var ca = document.cookie;
+                ca = ca.split(';');
+                for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
+            }
             //Login Name Prompt
-            var username = "";
-            while(username == "")
+            
+            var username = readCookie("username");
+            //if()
+            while(username == "" || username == null)
             {
                 username = prompt('Enter a Username:', '');
             }
+            document.cookie = "username="+username+"; max-age=60*60*60";
+            console.log(username);
             var loading = true;
+
+            var roomname = readCookie("room");
+            if (roomname == null) {
+                roomname = "main";
+            }
+            document.cookie = "room="+roomname;
         </script>
         <div class="container-fluid" id="MainWrapper">
             <div class="row" style="margin-top: 10vh;">
@@ -105,7 +127,6 @@
             var form = document.getElementById('form');
             var input = document.getElementById('input');
             var usercountId = document.getElementById('usercountID');
-            var roomname = "";
 
 
             anime({
@@ -166,21 +187,23 @@
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 if (input.value) {
+                    roomname = readCookie("room");
                     socket.emit('chat message', input.value, username, roomname);
                     console.log(input.value + "in Room "+roomname);
                     input.value = '';
                 }
+                
             });
 
             document.getElementById("newRoomForm").addEventListener('submit', function(e) {
-                e.preventDefault
+                e.preventDefault();
                 if(newRoomInput.value) {
                     socket.emit('newRoomCreate', newRoomInput.value);
                     console.log("roomname" + newRoomInput.value);
                     roomname = newRoomInput.value;
                     input.value = '';
-                    
-                }  
+                    document.cookie = "room="+roomname;
+                }
             })
 
             /*document.getElementById('input').addEventListener('input', function(evt) {
@@ -253,6 +276,8 @@
                 {
                 audio.play();
                 }
+                //Username Cookie erneuern
+                document.cookie = "username="+username+"; max-age=60*60"; //expires after 1 hour
             });
 
             /*socket.on('typing', function(pusername) {
