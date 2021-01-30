@@ -91,7 +91,7 @@ body {
     list-style-type: none; 
     margin: 0; 
     padding: 0; 
-    
+    width: 100%;
 }
       
 #messages > li { 
@@ -112,4 +112,8 @@ body {
     width: 80%;
     float: left !important;
     background-color: var(--color2) !important;
+}
+
+.sysMessage {
+    width:100%;
 }

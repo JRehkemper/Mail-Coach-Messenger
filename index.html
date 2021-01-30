@@ -188,6 +188,7 @@
             socket.on('connection', function(pusername) {
                 var item = document.createElement('li');
                 item.textContent = "User joined the Chat";
+                item.className = "sysMessage";
                 messages.appendChild(item);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
@@ -201,6 +202,7 @@
             socket.on('disconnected', function(pusername) {
                 var item = document.createElement('li');
                 item.textContent = "User left the Chat";
+                item.className = "sysMessage";
                 messages.appendChild(item);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
