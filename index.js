@@ -36,15 +36,22 @@ io.on('connection', (socket) => {
     io.emit('usercount', usercount);
   });*/
 
-  socket.on('chat message', (msg, username) => {
-    io.sockets.in("main").emit('chat message', msg, username);
-    console.log('chat message: ' + msg);
+  socket.on('chat message', (msg, username, proomname) => {
+    if(proomname == "") {
+      roomname = "main";
+    }
+    else {
+      roomname = proomname;
+    }
+    io.sockets.in(roomname).emit('chat message', msg, username);
+      console.log('chat message: ' + roomname +" "+ msg + " " + proomname);
   });
 
   socket.on('newRoomCreate', (roomName) => {
     socket.leave("main");
     socket.join(roomName);
-    io.socket.in(roomName).emit('connection');
+    socket.in(roomName).emit('connection');
+    console.log("New Room created "+roomName);
   });
   
 });

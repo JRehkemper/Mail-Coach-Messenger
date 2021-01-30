@@ -53,7 +53,7 @@
                             <div class="col-2 mx-auto">
                                 <form id="newRoomForm" action="">
                                     <input style="width:100% !important" id="newRoomInput">
-                                    <button style="width: 100% !important;" class="text-center p-1">out of Order<!-- Create New Room --></button>
+                                    <button style="width: 100% !important;" class="text-center p-1">Create New Room</button>
                                 </form>
                             </div>
                             <!-- Chatmessages-->
@@ -105,6 +105,7 @@
             var form = document.getElementById('form');
             var input = document.getElementById('input');
             var usercountId = document.getElementById('usercountID');
+            var roomname = "";
 
 
             anime({
@@ -165,16 +166,20 @@
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 if (input.value) {
-                    socket.emit('chat message', input.value, username);
+                    socket.emit('chat message', input.value, username, roomname);
+                    console.log(input.value + "in Room "+roomname);
                     input.value = '';
                 }
             });
 
-            document.getElementById("newRoomForm").addEventListener('click', function(data) {
+            document.getElementById("newRoomForm").addEventListener('submit', function(e) {
                 e.preventDefault
                 if(newRoomInput.value) {
                     socket.emit('newRoomCreate', newRoomInput.value);
+                    console.log("roomname" + newRoomInput.value);
+                    roomname = newRoomInput.value;
                     input.value = '';
+                    
                 }  
             })
 
