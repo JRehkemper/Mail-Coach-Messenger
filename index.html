@@ -28,15 +28,20 @@
                 return null;
             }
             //Login Name Prompt
-            
+            function enterUsername() {
+                username = prompt('Enter a Username:', '');
+                document.cookie = "username="+username;
+                console.log(username);
+            }
             var username = readCookie("username");
             //if()
             while(username == "" || username == null)
             {
-                username = prompt('Enter a Username:', '');
+                //username = prompt('Enter a Username:', '');
+                enterUsername();
             }
-            document.cookie = "username="+username;
-            console.log(username);
+            //document.cookie = "username="+username;
+            //console.log(username);
             var loading = true;
 
             var roomname = readCookie("room");
@@ -48,13 +53,23 @@
         </script>
 
         <!-- html ---------------------------------------------------------->
+        
         <div class="container-fluid" id="MainWrapper">
-            <div class="row" style="margin-top: 10vh;">
+            
+            <div class="row"><!--margintop-->
                 <!-- left Space -->
                 <div class="col-2 d-none d-sm-none d-md-none">
                     
                 </div>
                 <!-- Middle Space -->
+
+                <!-- NavButtons -->
+                <div class="navButtonsBar col-10 sticky-top p-4 mx-auto">
+                    <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
+                        <img src="/img/settings.svg" style="width: 2em; height: 2em; float: right;">
+                    </div>
+                </div>
+                <!-- Main Area -->
                 <div class="col-lg-8 col-xl-8 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
                     
                         
@@ -108,13 +123,22 @@
                                 </div>
                             </div>
                         </div>
-                    
-                    
                 </div>
                 <!-- Right Space -->
                 <div class="col-2 d-none d-sm-none d-md-none">
 
                 </div>
+            </div>
+        </div>
+        <!-- Settings Overlay -->
+        <div id="settingsMenu" class="container-fluid" style="height: 100% !important; background: rgba(0,0,0,0.7); position: absolute; top:0; bottom:0; left:0; right: 0; z-index: 2000; display: none;">
+              
+            <div class="text-center col-6 mx-auto p-4" style="background: #fff; width: 50%; height: 50%; margin-top: 10em; border-radius: 2em;">
+                <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
+                    <img src="/img/cancel.svg" style="width: 2em; height: 2em; float: right;">
+                </div>
+                <h3 class="text-center p-4">Settings</h3>
+                <p class="text-center"><a href="javascript:enterUsername()">Change Username</a></p>
             </div>
         </div>
         
@@ -325,6 +349,17 @@
             function displayRoomName() {
                 
                 document.getElementById('channelName').innerHTML = readCookie("room");
+            }
+
+            function toggleSettings() {
+                var settings = document.getElementById('settingsMenu');
+                if (settings.style.display == "none")
+                {
+                    settings.style.display = "block";
+                }
+                else {
+                    settings.style.display = "none";
+                }
             }
         </script>
     </body>
