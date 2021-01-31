@@ -35,7 +35,7 @@
             {
                 username = prompt('Enter a Username:', '');
             }
-            document.cookie = "username="+username+"; max-age=60*60*60";
+            document.cookie = "username="+username;
             console.log(username);
             var loading = true;
 
@@ -44,7 +44,10 @@
                 roomname = "main";
             }
             document.cookie = "room="+roomname;
+            
         </script>
+
+        <!-- html ---------------------------------------------------------->
         <div class="container-fluid" id="MainWrapper">
             <div class="row" style="margin-top: 10vh;">
                 <!-- left Space -->
@@ -67,7 +70,7 @@
                         
                         <!-- Channelname-->
                         <div class="Channel pt-1 mt-1 sticky-top">
-                            <h5 class="text-center p-1 ChannelM">Main Channel - Everybody can read and write</h5>
+                            <h5 id="channelName" class="text-center p-1 ChannelM">Main Channel - Everybody can read and write</h5>
                             <p class="text-center p-1 ChannelM" id="usercountId">Users</p>
                         </div>
                         <div class="row">
@@ -77,6 +80,9 @@
                                     <input style="width:100% !important" id="newRoomInput">
                                     <button style="width: 100% !important;" class="text-center p-1">Create New Room</button>
                                 </form>
+                                <ul id="roomList">
+
+                                </ul>
                             </div>
                             <!-- Chatmessages-->
                             <div class="Chatarea col-8 mx-auto">
@@ -204,6 +210,7 @@
                     input.value = '';
                     document.cookie = "room="+roomname;
                 }
+                displayRoomName();
             })
 
             /*document.getElementById('input').addEventListener('input', function(evt) {
@@ -214,6 +221,8 @@
             });*/
 
             socket.on('connection', function(pusername) {
+                displayRoomName();
+
                 var item = document.createElement('li');
                 item.textContent = "User joined the Chat";
                 item.className = "sysMessage";
@@ -277,7 +286,9 @@
                 audio.play();
                 }
                 //Username Cookie erneuern
-                document.cookie = "username="+username+"; max-age=60*60"; //expires after 1 hour
+                document.cookie = "username="+username;
+
+                displayRoomName();
             });
 
             /*socket.on('typing', function(pusername) {
@@ -288,6 +299,33 @@
             socket.on('usercount', function(usercount) {
                 document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
             });
+
+            socket.on('roomSet', function(roomSet) {
+                var list = document.getElementById('roomList');
+                var rooms = [];
+                for(i = 0; i < roomSet.length; i += 1)
+                {
+                    str1 = '"javascript:joinRoom(';
+                    str2 = "'";
+                    str3 = "')";
+                    rooms[i] = '<li class="roomListItem"><a href='+str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
+                }
+                
+                list.innerHTML = '<ul id="roomList">' + rooms + '</ul>';
+            });
+
+            function joinRoom(roomname) {
+                    socket.emit('joinRoom', roomname);
+                    console.log("Join Room " + roomname);
+                    document.cookie = "room="+roomname;
+
+                    displayRoomName();
+            };
+
+            function displayRoomName() {
+                
+                document.getElementById('channelName').innerHTML = readCookie("room");
+            }
         </script>
     </body>
 </html>

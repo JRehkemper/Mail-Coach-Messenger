@@ -32,8 +32,26 @@ io.on('connection', (socket) => {
   socket.join(reqRoom);
   console.log('a user connected');
   io.sockets.in(reqRoom).emit('connection');
+  
+  //roomlist
+  var roomlist = socket.rooms;
+  var roomSet = [];
+  roomlist.forEach(print);
+  function print(values) {
+    if(values != null) {
+      values = values.replace(' ', '');
+      console.log(values);
+      roomSet.push(values);
+    }
+  }
+  console.log("roomSet " + roomSet);
+  io.emit('roomSet', roomSet);
+  
+  //usercount
   usercount++;
   io.sockets.in(reqRoom).emit('usercount', usercount);
+  
+  //disconnect
   socket.on('disconnect', (socket) => {
     console.log('a user left');
     io.sockets.in(reqRoom).emit('disconnected');
@@ -49,18 +67,23 @@ io.on('connection', (socket) => {
   });*/
 
   socket.on('chat message', (msg, username, proomname) => {
-    /*if(proomname == "") {
-      roomname = "main";
+    //roomlist
+    var roomlist = socket.rooms;
+    var roomSet = [];
+    roomlist.forEach(print);
+    function print(values) {
+      if(values != null) {
+        values = values.replace(' ', '');
+        console.log(values);
+        roomSet.push(values);
+      }
     }
-    else {
-      roomname = proomname;
-    }*/
-    //roomname = reqRoom;
-    var roomlist = io.sockets.adapter.rooms; // liste aller Räume
-    console.log(roomlist); //log aller Räume
-
+    console.log("roomSet " + roomSet);
+    io.emit('roomSet', roomSet);
+    
+    //chat Message
     io.sockets.in(proomname).emit('chat message', msg, username);
-      console.log('chat message: ' + proomname +" "+ msg + " ");
+    console.log('chat message: ' + proomname +" "+ msg + " ");
   });
 
   socket.on('newRoomCreate', (roomName) => {
@@ -68,6 +91,12 @@ io.on('connection', (socket) => {
     socket.join(roomName);
     socket.in(roomName).emit('connection');
     console.log("New Room created "+roomName);
+  });
+
+  socket.on('joinRoom', (roomName) => {
+    socket.join(roomName);
+    socket.in(roomName).emit('connection');
+    console.log("Room joind");
   });
   
 });

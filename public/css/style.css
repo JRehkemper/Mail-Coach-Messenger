@@ -117,3 +117,31 @@ body {
 .sysMessage {
     width:100%;
 }
+
+#newRoomForm input {
+    border-radius: 2rem;
+    padding:0 1em;
+}
+
+#newRoomForm button {
+    background:var(--color5); 
+    border: none;
+    padding-top: 0 1rem; 
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    border-radius: 3px; 
+    outline: none; 
+    color: #fff; 
+    padding: 1em;
+}
+
+#roomList {
+    width: 100%;
+    overflow-x: hidden;
+
+}
+
+.roomListItem {
+    overflow-x: hidden;
+    padding-top: 1em;
+}
