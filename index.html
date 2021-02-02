@@ -231,9 +231,21 @@
                     socket.emit('newRoomCreate', newRoomInput.value);
                     console.log("roomname" + newRoomInput.value);
                     roomname = newRoomInput.value;
-                    input.value = '';
+                    newRoomInput.value = '';
                     document.cookie = "room="+roomname;
                 }
+
+                var item = document.createElement('li');
+                    item.textContent = "You joined "+ roomname;
+                    item.className = "sysMessage";
+                    messages.appendChild(item);
+                    anime({
+                        targets: document.getElementById('messages').lastElementChild,
+                        translateY: [50, 0],
+                        opacity: [0, 1],
+                    });
+                    window.scrollTo(0, document.body.scrollHeight);
+
                 displayRoomName();
             })
 
@@ -244,75 +256,84 @@
                 
             });*/
 
-            socket.on('connection', function(pusername) {
+            socket.on('connection', function(pusername, proomname) {
                 displayRoomName();
-
-                var item = document.createElement('li');
-                item.textContent = "User joined the Chat";
-                item.className = "sysMessage";
-                messages.appendChild(item);
-                anime({
-                    targets: document.getElementById('messages').lastElementChild,
-                    translateY: [50, 0],
-                    opacity: [0, 1],
-                });
-                window.scrollTo(0, document.body.scrollHeight);
-                audio.play();
+                var roomname = readCookie("room");
+                if (roomname == proomname) {
+                    var item = document.createElement('li');
+                    item.textContent = pusername + " joined the Chat";
+                    item.className = "sysMessage";
+                    messages.appendChild(item);
+                    anime({
+                        targets: document.getElementById('messages').lastElementChild,
+                        translateY: [50, 0],
+                        opacity: [0, 1],
+                    });
+                    window.scrollTo(0, document.body.scrollHeight);
+                    audio.play();
+                }
             });
 
-            socket.on('disconnected', function(pusername) {
-                var item = document.createElement('li');
-                item.textContent = "User left the Chat";
-                item.className = "sysMessage";
-                messages.appendChild(item);
-                anime({
-                    targets: document.getElementById('messages').lastElementChild,
-                    translateY: [50, 0],
-                    opacity: [0, 1],
-                });
-                window.scrollTo(0, document.body.scrollHeight);
-                audio.play();
+            socket.on('disconnected', function(pusername, proomname) {
+                var roomname = readCookie("room");
+                if (roomname == proomname) {
+                    var item = document.createElement('li');
+                    item.textContent = pusername + " left the Chat";
+                    item.className = "sysMessage";
+                    messages.appendChild(item);
+                    anime({
+                        targets: document.getElementById('messages').lastElementChild,
+                        translateY: [50, 0],
+                        opacity: [0, 1],
+                    });
+                    window.scrollTo(0, document.body.scrollHeight);
+                    audio.play();
+                }
             });
 
-            socket.on('chat message', function(msg, pusername) {
-                var item = document.createElement('li');
-                item.textContent = pusername+": "+msg;
-                if (pusername == username) {
-                    item.className = "text-left ownMessage";
-                }
-                else {
-                    item.className = "text-left otherMessage";
-                }
-                messages.appendChild(item);
-                /*anime({
-                    targets: document.getElementById('messages').lastElementChild,
-                    translateY: [50, 0],
-                    opacity: [0, 1],
-                });*/
-                anime({
-                    targets: document.querySelectorAll(".ownMessage:last-child"),
-                    translateX: [50, 0],
-                    translateY: [0, 0],
-                    opacity: [0, 1],
-                });
-                anime({
-                    targets: document.querySelectorAll(".otherMessage:last-child"),
-                    translateX: [-50, 0],
-                    translateY: [0, 0],
-                    opacity: [0, 1],
-                });
-
-                //if(loading != true) {
-                    $('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
-                //};
-                if(username != pusername)
+            socket.on('chat message', function(msg, pusername, proomname) {
+                var roomname = readCookie("room");
+                if(roomname == proomname)
                 {
-                audio.play();
-                }
-                //Username Cookie erneuern
-                document.cookie = "username="+username;
+                    var item = document.createElement('li');
+                    item.textContent = pusername+": "+msg;
+                    if (pusername == username) {
+                        item.className = "text-left ownMessage";
+                    }
+                    else {
+                        item.className = "text-left otherMessage";
+                    }
+                    messages.appendChild(item);
+                    /*anime({
+                        targets: document.getElementById('messages').lastElementChild,
+                        translateY: [50, 0],
+                        opacity: [0, 1],
+                    });*/
+                    anime({
+                        targets: document.querySelectorAll(".ownMessage:last-child"),
+                        translateX: [50, 0],
+                        translateY: [0, 0],
+                        opacity: [0, 1],
+                    });
+                    anime({
+                        targets: document.querySelectorAll(".otherMessage:last-child"),
+                        translateX: [-50, 0],
+                        translateY: [0, 0],
+                        opacity: [0, 1],
+                    });
 
-                displayRoomName();
+                    //if(loading != true) {
+                        $('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
+                    //};
+                    if(username != pusername)
+                    {
+                    audio.play();
+                    }
+                    //Username Cookie erneuern
+                    document.cookie = "username="+username;
+
+                    displayRoomName();
+                }
             });
 
             /*socket.on('typing', function(pusername) {
@@ -342,6 +363,17 @@
                     socket.emit('joinRoom', roomname);
                     console.log("Join Room " + roomname);
                     document.cookie = "room="+roomname;
+
+                    var item = document.createElement('li');
+                    item.textContent = "You joined "+ roomname;
+                    item.className = "sysMessage";
+                    messages.appendChild(item);
+                    anime({
+                        targets: document.getElementById('messages').lastElementChild,
+                        translateY: [50, 0],
+                        opacity: [0, 1],
+                    });
+                    window.scrollTo(0, document.body.scrollHeight);
 
                     displayRoomName();
             };

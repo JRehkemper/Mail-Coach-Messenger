@@ -8,6 +8,7 @@ const path = require('path');
 const { disconnect } = require('process');
 var usercount = 0;
 var reqRoom;
+var username;
 
 app.use(express.static(path.join(__dirname, '/public')));
 
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
   //console.log(document.cookie);
   console.log(req.cookies['username']);
   reqRoom = req.cookies['room'];
+  username = req.cookies['username'];
   console.log(reqRoom);
   if(reqRoom == null)
   {
@@ -31,7 +33,7 @@ http.listen(3000, () => {
 io.on('connection', (socket) => {
   socket.join(reqRoom);
   console.log('a user connected');
-  io.sockets.in(reqRoom).emit('connection');
+  io.sockets.in(reqRoom).emit('connection', username, reqRoom);
   
   //roomlist
   var roomlist = socket.rooms;
@@ -54,7 +56,7 @@ io.on('connection', (socket) => {
   //disconnect
   socket.on('disconnect', (socket) => {
     console.log('a user left');
-    io.sockets.in(reqRoom).emit('disconnected');
+    io.sockets.in(reqRoom).emit('disconnected', username, reqRoom);
     usercount--;
     io.sockets.in(reqRoom).emit('usercount', usercount);
   })
@@ -82,7 +84,7 @@ io.on('connection', (socket) => {
     io.emit('roomSet', roomSet);
     
     //chat Message
-    io.sockets.in(proomname).emit('chat message', msg, username);
+    io.sockets.in(proomname).emit('chat message', msg, username, proomname);
     console.log('chat message: ' + proomname +" "+ msg + " ");
   });
 
