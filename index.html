@@ -53,8 +53,37 @@
         </script>
 
         <!-- html ---------------------------------------------------------->
-        
         <div class="container-fluid" id="MainWrapper">
+
+        <!-- Cookie Banner -->
+        <div id="footer-cookie">
+            <span id="description" class="text-center">
+            We are using Cookies for the best User-Experience. By visiting this website you agree to recieving Cookies.
+            </span>
+            <span id="accept"><a href="javascript:void(0)" title="Akzeptieren">Akzeptieren</a></span>
+        </div>
+        <script>
+            /*
+                www.dakitec.de - Cookie Banner
+                https://dakitec.de/blog/cookie-banner-selbst-erstellen
+                Dieses Skript zeigt den Banner an, wenn er noch nicht bestätigt wurde
+            */
+            var footerCookie = document.querySelector("#footer-cookie");
+            var footerCookieAccept = document.querySelector("#accept");
+        
+            if (document.cookie.indexOf("dakitecCookieBanner=") == -1) {
+                footerCookie.style.display = "block";
+            }
+        
+            footerCookieAccept.onclick = function(e) {
+                var cookieDate = new Date();
+                cookieDate.setTime(new Date().getTime() + 31104000000);
+        
+                document.cookie = "dakitecCookieBanner = 1; path=/; secure; expires=" + cookieDate.toUTCString();
+        
+                footerCookie.style.display = "none";
+            };
+        </script>
             
             <div class="row"><!--margintop-->
                 <!-- left Space -->
@@ -66,7 +95,7 @@
                 <!-- NavButtons -->
                 <div class="navButtonsBar col-10 sticky-top p-4 mx-auto">
                     <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
-                        <img src="/img/settings.svg" style="width: 2em; height: 2em; float: right;">
+                        <img src="/img/settings.svg" style="width: 2em; height: 2em; float: right; background-color: white; border-radius: 50%; padding:2px;">
                     </div>
                 </div>
                 <!-- Main Area -->
@@ -90,12 +119,12 @@
                         </div>
                         <div class="row">
                             <!-- New Room -->
-                            <div class="col-2 mx-auto">
-                                <form id="newRoomForm" action="">
+                            <div class="col-2 mx-auto ">
+                                <form id="newRoomForm" action="" class="sticky-top" style="top:120px !important;">
                                     <input style="width:100% !important" id="newRoomInput">
                                     <button style="width: 100% !important;" class="text-center p-1">Create New Room</button>
                                 </form>
-                                <ul id="roomList">
+                                <ul id="roomList" class="sticky-top" style="top:200px !important;">
 
                                 </ul>
                             </div>
