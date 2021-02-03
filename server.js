@@ -40,15 +40,8 @@ io.on('connection', (socket) => {
   var roomSet = [];
   roomlist.forEach(print);
   function print(values) {
-    if(values != null) {
-      if(values.length != 20)
-      {
-        values = values.replace(' ', '');
-        console.log(values);
-        roomSet.push(values);
-      }
-    }
-  }
+    printValues(values);
+  };
   console.log("roomSet " + roomSet);
   io.emit('roomSet', roomSet);
   
@@ -77,14 +70,7 @@ io.on('connection', (socket) => {
     var roomSet = [];
     roomlist.forEach(print);
     function print(values) {
-      if(values != null) {
-        if(values.length != 20)
-        {
-          values = values.replace(' ', '');
-          console.log(values);
-          roomSet.push(values);
-        }
-      }
+      printValues(values);
     }
     console.log("roomSet " + roomSet);
     io.emit('roomSet', roomSet);
@@ -106,6 +92,17 @@ io.on('connection', (socket) => {
     socket.in(roomName).emit('connection');
     console.log("Room joind");
   });
+
+  function printValues(values) {
+    if(values != null) {
+      if(values.length != 20)
+      {
+        values = values.replace(' ', '');
+        console.log(values);
+        roomSet.push(values);
+      }
+    }
+  }
   
 });
 
