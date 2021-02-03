@@ -41,9 +41,12 @@ io.on('connection', (socket) => {
   roomlist.forEach(print);
   function print(values) {
     if(values != null) {
-      values = values.replace(' ', '');
-      console.log(values);
-      roomSet.push(values);
+      if(values.length != 20)
+      {
+        values = values.replace(' ', '');
+        console.log(values);
+        roomSet.push(values);
+      }
     }
   }
   console.log("roomSet " + roomSet);
@@ -75,9 +78,12 @@ io.on('connection', (socket) => {
     roomlist.forEach(print);
     function print(values) {
       if(values != null) {
-        values = values.replace(' ', '');
-        console.log(values);
-        roomSet.push(values);
+        if(values.length != 20)
+        {
+          values = values.replace(' ', '');
+          console.log(values);
+          roomSet.push(values);
+        }
       }
     }
     console.log("roomSet " + roomSet);
