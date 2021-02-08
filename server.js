@@ -48,7 +48,26 @@ io.on('connection', (socket) => {
   socket.join(reqRoom);
   console.log('a user connected');
   io.sockets.in(reqRoom).emit('connection', username, reqRoom);
+
+  var sql = "CREATE TABLE IF NOT EXISTS ? (ID int NOT NULL auto_increment, Timestamp timestamp NOT NULL DEFAULT 'CURRENT_TIMESTAMP', Messages varchar(1024) NOT NULL, PRIMARY KEY (ID))";
+  var valRoom = reqRoom + "Messages";
+  var val = [valRoom];
+
+  con.query(sql, val, function(err, results)
+  {
+
+  });
+
+  var sql = "CREATE TABLE IF NOT EXISTS ? (ID int NOT NULL auto_increment, Timestamp timestamp NOT NULL DEFAULT 'CURRENT_TIMESTAMP', Username varchar(256) NOT NULL, PRIMARY KEY (ID))";
+  var valRoom = reqRoom + "User";
+  var val = [valRoom];
+
+  con.query(sql, val, function(err, results)
+  {
+
+  });
   
+
   //roomlist
   var roomlist = socket.rooms;
   var roomSet = [];
