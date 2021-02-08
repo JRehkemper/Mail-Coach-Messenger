@@ -260,20 +260,25 @@
                     socket.emit('newRoomCreate', newRoomInput.value);
                     console.log("roomname" + newRoomInput.value);
                     roomname = newRoomInput.value;
+                    if(roomname.length == 20)
+                    {
+                        roomname = roomname+" ";
+                    }
                     newRoomInput.value = '';
                     document.cookie = "room="+roomname;
                 }
 
-                var item = document.createElement('li');
-                    item.textContent = "You joined "+ roomname;
-                    item.className = "sysMessage";
-                    messages.appendChild(item);
-                    anime({
-                        targets: document.getElementById('messages').lastElementChild,
-                        translateY: [50, 0],
-                        opacity: [0, 1],
-                    });
-                    window.scrollTo(0, document.body.scrollHeight);
+                attachMessage("sysMessage", "You joined ", roomname, "");
+                /*var item = document.createElement('li');
+                item.textContent = "You joined "+ roomname;
+                item.className = "sysMessage";
+                messages.appendChild(item);*/
+                anime({
+                    targets: document.getElementById('messages').lastElementChild,
+                    translateY: [50, 0],
+                    opacity: [0, 1],
+                });
+                //window.scrollTo(0, document.body.scrollHeight);
 
                 displayRoomName();
             })
@@ -289,16 +294,17 @@
                 displayRoomName();
                 var roomname = readCookie("room");
                 if (roomname == proomname) {
-                    var item = document.createElement('li');
+                    attachMessage("sysMessage", pusername, " joined the Chat", "");
+                    /*var item = document.createElement('li');
                     item.textContent = pusername + " joined the Chat";
                     item.className = "sysMessage";
-                    messages.appendChild(item);
+                    messages.appendChild(item);*/
                     anime({
                         targets: document.getElementById('messages').lastElementChild,
                         translateY: [50, 0],
                         opacity: [0, 1],
                     });
-                    window.scrollTo(0, document.body.scrollHeight);
+                    //window.scrollTo(0, document.body.scrollHeight);
                     audio.play();
                 }
             });
@@ -306,16 +312,17 @@
             socket.on('disconnected', function(pusername, proomname) {
                 var roomname = readCookie("room");
                 if (roomname == proomname) {
-                    var item = document.createElement('li');
+                    attachMessage("sysMessage", pusername, " left the Chat", "");
+                    /*var item = document.createElement('li');
                     item.textContent = pusername + " left the Chat";
                     item.className = "sysMessage";
-                    messages.appendChild(item);
+                    messages.appendChild(item);*/
                     anime({
                         targets: document.getElementById('messages').lastElementChild,
                         translateY: [50, 0],
                         opacity: [0, 1],
                     });
-                    window.scrollTo(0, document.body.scrollHeight);
+                    //window.scrollTo(0, document.body.scrollHeight);
                     audio.play();
                 }
             });
@@ -324,7 +331,14 @@
                 var roomname = readCookie("room");
                 if(roomname == proomname)
                 {
-                    var item = document.createElement('li');
+                    if(pusername == username)
+                    {
+                        attachMessage("text-left ownMessage", pusername, ": ", msg,"");
+                    }
+                    else{
+                        attachMessage("text-left otherMessage", pusername, ": ", msg, "");
+                    }
+                    /*var item = document.createElement('li');
                     item.textContent = pusername+": "+msg;
                     if (pusername == username) {
                         item.className = "text-left ownMessage";
@@ -332,12 +346,7 @@
                     else {
                         item.className = "text-left otherMessage";
                     }
-                    messages.appendChild(item);
-                    /*anime({
-                        targets: document.getElementById('messages').lastElementChild,
-                        translateY: [50, 0],
-                        opacity: [0, 1],
-                    });*/
+                    messages.appendChild(item);*/
                     anime({
                         targets: document.querySelectorAll(".ownMessage:last-child"),
                         translateX: [50, 0],
@@ -351,15 +360,12 @@
                         opacity: [0, 1],
                     });
 
-                    //if(loading != true) {
-                        $('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
-                    //};
+                    //$('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
+
                     if(username != pusername)
                     {
                     audio.play();
                     }
-                    //Username Cookie erneuern
-                    document.cookie = "username="+username;
 
                     displayRoomName();
                 }
@@ -392,8 +398,14 @@
                     socket.emit('joinRoom', roomname);
                     console.log("Join Room " + roomname);
                     document.cookie = "room="+roomname;
+                    attachMessage("sysMessage", "You joined ", roomname, "");
+                    anime({
+                        targets: document.getElementById('messages').lastElementChild,
+                        translateY: [50, 0],
+                        opacity: [0, 1],
+                    });
 
-                    var item = document.createElement('li');
+                    /*var item = document.createElement('li');
                     item.textContent = "You joined "+ roomname;
                     item.className = "sysMessage";
                     messages.appendChild(item);
@@ -404,7 +416,7 @@
                     });
                     window.scrollTo(0, document.body.scrollHeight);
 
-                    displayRoomName();
+                    displayRoomName();*/
             };
 
             function displayRoomName() {
@@ -421,6 +433,15 @@
                 else {
                     settings.style.display = "none";
                 }
+            }
+
+            function attachMessage(className, str1, str2, str3, str4) {
+                var item = document.createElement('li');
+                item.textContent = str1 + str2 + str3 + str4;
+                item.className = className;
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+                displayRoomName();
             }
         </script>
     </body>
