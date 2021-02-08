@@ -19,6 +19,11 @@ var con = mysql.createConnection({
   database: "chatdb"
 });
 
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected to Database!");
+});
+
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/', (req, res) => {
