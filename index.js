@@ -10,6 +10,15 @@ var usercount = 0;
 var reqRoom;
 var username;
 
+var mysql =require('mysql');
+
+var con = mysql.createConnection({
+  host:"192.168.0.215",
+  user: "dbuser",
+  password: "chatroom123",
+  database: "chatdb"
+});
+
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/', (req, res) => {
