@@ -146,9 +146,16 @@ io.on('connection', (socket) => {
   };
 
   function joinRoomSQL(room) {
-    var sql = "INSERT INTO chatdb.Rooms (Room) VALUES (?);";
+
+ if (booleanSQL("Rooms","Room",room ) == false ){
+var sql = "INSERT INTO chatdb.Rooms (Room) VALUES (?);";
     var val = [room];
     executeSQL(sql, val);
+	console.log("room created")
+}
+else  {
+	console.log("already exists");
+}
   };
 
   function MesseageSQL (user, message, room) {
@@ -174,6 +181,16 @@ io.on('connection', (socket) => {
     console.log("roomSet " + roomSet);
     io.emit('roomSet', roomSet);
   };
+
+  function  booleanSQL(table,column,value) {
+   var sql = "SELECT IF(  EXISTS(SELECT ? FROM ? WHERE ? ='?' ),'true','false' )AS result;"
+  var val = [column,table,column,value];
+  var result = executeSQL(sql,val);
+ console.log(result);
+return result;
+ 
+
+}
 
   
 });
