@@ -15,8 +15,9 @@ var mysql =require('mysql');
 var con = mysql.createConnection({
   host:"192.168.0.215",
   user: "dbuser",
-  password: "chatroom123",
-  database: "chatdb"
+  password: "chat123",
+  database: "chatdb",
+	insecureAuth : true
 });
 
 con.connect(function(err) {
