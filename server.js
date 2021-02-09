@@ -1,18 +1,18 @@
-import express, { static } from 'express';
-import cookieParser from 'cookie-parser';
+const express = require('express');
+const cookieParser = require('cookie-parser');
 const app = express();
 app.use(cookieParser());
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-import { join } from 'path';
-import { disconnect } from 'process';
+const path = require('path');
+const { disconnect } = require('process');
 var usercount = 0;
 var reqRoom;
 var username;
 
-import { createConnection } from 'mysql';
+var mysql =require('mysql');
 
-var con = createConnection({
+var con = mysql.createConnection({
   host:"192.168.0.215",
   user: "dbuser",
   password: "chat123",
@@ -25,7 +25,7 @@ con.connect(function(err) {
   console.log("Connected to Database!");
 });
 
-app.use(static(join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
