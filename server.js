@@ -65,14 +65,15 @@ io.on('connection', (socket) => {
   
 
   //roomlist
-  var roomlist = socket.rooms;
-  var roomSet = [];
+  roomSet();
+  /*var roomlist = socket.rooms;
+  var roomSet = roomSetSQL();
   roomlist.forEach(print);
   function print(values) {
     printValues(values);
   };
   console.log("roomSet " + roomSet);
-  io.emit('roomSet', roomSet);
+  io.emit('roomSet', roomSet);*/
   
   //usercount
   usercount++;
@@ -95,14 +96,15 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (msg, username, proomname) => {
     //roomlist
-    var roomlist = socket.rooms;
-    var roomSet = roomSetSQL();
+    /*var roomlist = socket.rooms;
+    var roomSet = roomSetSQL();*/
+    roomSet();
     /*roomlist.forEach(print);
     function print(values) {
       printValues(values);
     }*/
-    console.log("roomSet " + roomSet);
-    io.emit('roomSet', roomSet);
+    /*console.log("roomSet " + roomSet);
+    io.emit('roomSet', roomSet);*/
     
     //chat Message
     io.sockets.in(proomname).emit('chat message', msg, username, proomname);
@@ -156,7 +158,8 @@ io.on('connection', (socket) => {
   }
 
   function roomSetSQL() {
-    con.query(sql, val, function (err, rows, fields) {
+    sql = "SELECT Room FROM chatdb.Rooms;";
+    con.query(sql, function (err, rows, fields) {
       var arr = [];
       for(i = 0; i < rows.length; i++)
       {
@@ -165,6 +168,13 @@ io.on('connection', (socket) => {
       return arr;
     });
   }
+
+  function roomSet() {
+    var roomSet = roomSetSQL();
+    console.log("roomSet " + roomSet);
+    io.emit('roomSet', roomSet);
+  }
+
   
 });
 
