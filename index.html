@@ -383,15 +383,23 @@
             socket.on('roomSet', function(roomSet) {
                 var list = document.getElementById('roomList');
                 var rooms = [];
-                for(i = 0; i < roomSet.length; i += 1)
+                try
                 {
-                    str1 = '"javascript:joinRoom(';
-                    str2 = "'";
-                    str3 = "')";
-                    rooms[i] = '<li class="roomListItem"><a href='+str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
+                    for(i = 0; i < roomSet.length; i += 1)
+                    {
+                        str1 = '"javascript:joinRoom(';
+                        str2 = "'";
+                        str3 = "')";
+                        rooms[i] = '<li class="roomListItem"><a href='+str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
+                    }
+                    
+                    list.innerHTML = '<ul id="roomList">' + rooms + '</ul>';
                 }
-                
-                list.innerHTML = '<ul id="roomList">' + rooms + '</ul>';
+                catch
+                {
+                    
+                }
+
             });
 
             function joinRoom(roomname) {
