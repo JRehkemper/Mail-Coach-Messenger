@@ -50,24 +50,18 @@ io.on('connection', (socket) => {
   console.log('a user connected');
   io.sockets.in(reqRoom).emit('connection', username, reqRoom);
 
-  var sql = "CREATE TABLE IF NOT EXISTS chatdb.? (ID int NOT NULL auto_increment, Timestamp timestamp NOT NULL DEFAULT 'CURRENT_TIMESTAMP', Messages varchar(1024) NOT NULL, PRIMARY KEY (ID))";
+  joinRoomSQL(reqRoom);
+
+  /*var sql = "CREATE TABLE IF NOT EXISTS chatdb.? (ID int NOT NULL auto_increment, Timestamp timestamp NOT NULL DEFAULT 'CURRENT_TIMESTAMP', Messages varchar(1024) NOT NULL, PRIMARY KEY (ID))";
   var valRoom = reqRoom + "Messages";
   var val = [valRoom];
 
   con.query(sql, val, function(err, results)
   {
 
-  });
+  });*/
 
-  var sql = "Insert INTO chatdb.Rooms (Room) Values (?);";
-  var valRoom = reqRoom;
-  var val = [valRoom];
-	console.log(val);
-
-  con.query(sql, val, function(err, results)
-  {
-
-  });
+  
   
 
   //roomlist
@@ -102,17 +96,18 @@ io.on('connection', (socket) => {
   socket.on('chat message', (msg, username, proomname) => {
     //roomlist
     var roomlist = socket.rooms;
-    var roomSet = [];
-    roomlist.forEach(print);
+    var roomSet = roomSetSQL();
+    /*roomlist.forEach(print);
     function print(values) {
       printValues(values);
-    }
+    }*/
     console.log("roomSet " + roomSet);
     io.emit('roomSet', roomSet);
     
     //chat Message
     io.sockets.in(proomname).emit('chat message', msg, username, proomname);
     console.log('chat message: ' + proomname +" "+ msg + " ");
+    MesseageSQL(username, msg, proomname);
   });
 
   socket.on('newRoomCreate', (roomName) => {
@@ -122,10 +117,12 @@ io.on('connection', (socket) => {
     console.log("New Room created "+roomName);
   });
 
+  //join Room
   socket.on('joinRoom', (roomName) => {
     socket.join(roomName);
     socket.in(roomName).emit('connection');
     console.log("Room joind");
+    joinRoomSQL(reqRoom);
   });
 
   function printValues(values) {
@@ -137,6 +134,36 @@ io.on('connection', (socket) => {
         roomSet.push(values);
       }
     }
+  }
+
+  function executeSQL(sql, val) {
+    con.query(sql, val, function(err, results)
+    {
+
+    });
+  }
+
+  function joinRoomSQL(room) {
+    var sql = "INSERT INTO chatdb.Rooms (Room) VALUES (?);";
+    var val = [room];
+    executeSQL(sql, val);
+  }
+
+  function MesseageSQL (user, message, room) {
+    var sql = "INSERT INTO chatdb.? (User, Message) VALUES (?, ?);";
+    var val = [room, user, message];
+    executeSQL(sql, val);
+  }
+
+  function roomSetSQL() {
+    con.query(sql, val, function (err, rows, fields) {
+      var arr = [];
+      for(i = 0; i < rows.length; i++)
+      {
+        arr.push(rows[i]);
+      }
+      return arr;
+    });
   }
   
 });
