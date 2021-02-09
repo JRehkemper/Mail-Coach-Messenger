@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
     io.sockets.in(reqRoom).emit('disconnected', username, reqRoom);
     usercount--;
     io.sockets.in(reqRoom).emit('usercount', usercount);
-  })
+  });
   
   /*socket.on('refresh', (socket) => {
     console.log('a user left');
@@ -143,19 +143,19 @@ io.on('connection', (socket) => {
     {
 
     });
-  }
+  };
 
   function joinRoomSQL(room) {
     var sql = "INSERT INTO chatdb.Rooms (Room) VALUES (?);";
     var val = [room];
     executeSQL(sql, val);
-  }
+  };
 
   function MesseageSQL (user, message, room) {
     var sql = "INSERT INTO chatdb.? (User, Message) VALUES (?, ?);";
     var val = [room, user, message];
     executeSQL(sql, val);
-  }
+  };
 
   function roomSetSQL() {
     sql = "SELECT Room FROM chatdb.Rooms;";
@@ -167,13 +167,13 @@ io.on('connection', (socket) => {
       }
       return arr;
     });
-  }
+  };
 
   function roomSet() {
     var roomSet = roomSetSQL();
     console.log("roomSet " + roomSet);
     io.emit('roomSet', roomSet);
-  }
+  };
 
   
 });
