@@ -87,7 +87,7 @@
             
             <div class="row"><!--margintop-->
                 <!-- left Space -->
-                <div class="col-2 d-none d-sm-none d-md-none">
+                <div class="col-1 d-none d-sm-none d-md-none">
                     
                 </div>
                 <!-- Middle Space -->
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 <!-- Main Area -->
-                <div class="col-lg-8 col-xl-8 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
+                <div class="col-lg-10 col-xl-10 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
                     
                         
                         <div class="col-12 Header pt-3 pb-1 mx-auto">
@@ -117,21 +117,22 @@
                             <h5 id="channelName" class="text-center p-1 ChannelM">Main Channel - Everybody can read and write</h5>
                             <p class="text-center p-1 ChannelM" id="usercountId">Users</p>
                         </div>
-                        <div class="row">
+                        <div class="row" >
                             <!-- New Room -->
-                            <div class="col-2 mx-auto ">
+                            <div class="col-3 mx-auto" style=" overflow-x: hidden; max-height: 80vh;">
                                 <form id="newRoomForm" action="" class="sticky-top" style="top:120px !important;">
                                     <input style="width:100% !important" id="newRoomInput">
                                     <button style="width: 100% !important;" class="text-center p-1">Create/Join Room</button>
                                 </form>
-                                <ul id="roomList" class="sticky-top" style="top:200px !important;">
+                                <ul id="roomList" class="sticky-top" style="top:250px !important; max-height: 55vh;">
 
                                 </ul>
                             </div>
                             <!-- Chatmessages-->
-                            <div class="Chatarea col-8 mx-auto">
-                                <div class="col-lg-12 col-xl-12 mx-auto pt-3 ChatMessages">
-                                    <ul id="messages" style="min-height: 45vh;">
+                            <div class="Chatarea col-9 mx-auto" >
+                                <div class="col-lg-12 col-xl-12 mx-auto pt-3 ChatMessages" style="overflow-y: scroll; overflow-x: hidden;">
+                                    <ul id="messages" style="min-height: 45vh; max-height: 75vh;">
+
                                     </ul>
                                 </div>
                             </div>
@@ -141,7 +142,7 @@
                         </div>
                         <!-- Chatinput-Filed -->
                         <div class="row ChatInput" >
-                            <div class="col-12 col-lg-8 col-xl-8 mx-auto fixed-bottom formBackground">
+                            <div class="col-12 col-lg-10 col-xl-10 mx-auto fixed-bottom formBackground">
                                 <div class="col-12 col-lg-10 col-xl-8">
                                     <p id="typing"></p>
                                 </div>
@@ -154,7 +155,7 @@
                         </div>
                 </div>
                 <!-- Right Space -->
-                <div class="col-2 d-none d-sm-none d-md-none">
+                <div class="col-1 d-none d-sm-none d-md-none">
 
                 </div>
             </div>
