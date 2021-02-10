@@ -110,6 +110,7 @@ io.on('connection', (socket) => {
     io.sockets.in(proomname).emit('chat message', msg, username, proomname);
     console.log('chat message: ' + proomname +" "+ msg + " ");
     MesseageSQL(username, msg, proomname);
+
   });
 
   socket.on('newRoomCreate', (roomName) => {
@@ -117,14 +118,15 @@ io.on('connection', (socket) => {
     socket.join(roomName);
     socket.in(roomName).emit('connection');
     console.log("New Room created "+roomName);
-  });
+ 	joinRoomSQL(roomName);
+ });
 
   //join Room
   socket.on('joinRoom', (roomName) => {
     socket.join(roomName);
     socket.in(roomName).emit('connection');
-    console.log("Room joind");
-    joinRoomSQL(reqRoom);
+    console.log("Room joined");
+    joinRoomSQL(roomName);
   });
 
   function printValues(values) {
@@ -141,7 +143,7 @@ io.on('connection', (socket) => {
   function executeSQL(sql, val) {
     con.query(sql, val, function(err, results)
     {
-
+	console.log("execute sql" ,err);
     });
   };
 
@@ -159,7 +161,7 @@ else  {
   };
 
   function MesseageSQL (user, message, room) {
-    var sql = "INSERT INTO chatdb.? (User, Message) VALUES (?, ?);";
+    var sql = "INSERT INTO chatdb.?? (User, Message) VALUES (?, ?);";
     var val = [room, user, message];
     executeSQL(sql, val);
   };
@@ -183,9 +185,9 @@ else  {
   };
 
   function  booleanSQL(table,column,value) {
-   var sql = "SELECT IF(  EXISTS(SELECT ? FROM ? WHERE ? ='?' ),'true','false' )AS result;"
-  var val = [column,table,column,value];
-  var result = executeSQL(sql,val);
+   var sql = "SELECT IF(  EXISTS(SELECT ?? FROM ?? WHERE ?? = '??' ),'true','false' )AS result;";
+  var val = [column, table, column, value];
+  var result = executeSQL(sql, val);
  console.log(result);
 return result;
  
