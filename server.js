@@ -156,7 +156,7 @@ io.on('connection', (socket) => {
     else {
       console.log("already exists");
     }
-    var sql = "CREATE TABLE IF NOT EXISTS chatdb.? (ID int NOT NULL auto_increment, Timestamp timestamp NOT NULL DEFAULT 'CURRENT_TIMESTAMP', Messages varchar(1024) NOT NULL, PRIMARY KEY (ID))";
+    var sql = "CREATE TABLE IF NOT EXISTS chatdb.? (ID int NOT NULL auto_increment, Timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, Messages varchar(1024) NOT NULL, PRIMARY KEY (ID))";
     var val = [room + "Message"];
     executeSQL(sql, val);
   };
