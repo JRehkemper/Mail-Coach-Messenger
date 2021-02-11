@@ -281,7 +281,7 @@
                 newRoomInput.value = '';
                 document.cookie = "room=" + roomname;
 
-                attachMessage("sysMessage", "You joined ", roomname, "");
+                attachMessage("sysMessage", "You joined ", roomname, "", "");
                 /*var item = document.createElement('li');
                 item.textContent = "You joined "+ roomname;
                 item.className = "sysMessage";
@@ -310,7 +310,7 @@
             displayRoomName();
             var roomname = readCookie("room");
             if (roomname == proomname) {
-                attachMessage("sysMessage", pusername, " joined the Chat", "");
+                attachMessage("sysMessage", pusername, " joined the Chat", "", "");
                 /*var item = document.createElement('li');
                 item.textContent = pusername + " joined the Chat";
                 item.className = "sysMessage";
@@ -328,7 +328,7 @@
         socket.on('disconnected', function (pusername, proomname) {
             var roomname = readCookie("room");
             if (roomname == proomname) {
-                attachMessage("sysMessage", pusername, " left the Chat", "");
+                attachMessage("sysMessage", pusername, " left the Chat", "", "");
                 /*var item = document.createElement('li');
                 item.textContent = pusername + " left the Chat";
                 item.className = "sysMessage";
