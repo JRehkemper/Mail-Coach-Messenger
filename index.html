@@ -1,64 +1,66 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Chatroom</title>
-        <meta charset="utf-8">
-        <meta name="Realtime Chatroom Application" content="Realtime Chatroom Application">
-        <meta name="Bigosigos.de & JRehkemper.de" content="SitePoint">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link type="text/css" rel="stylesheet" href="/css/style.css">
-        <link rel="shortcut icon" type="image/x-icon" href="/img/chat.svg">
 
-        <!-- Bootstrap css-->
-        <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">      
-    </head>
-    
-    <body>
-        <script>
-            //Cookies
-            function readCookie(name) {
-                var nameEQ = name + "=";
-                var ca = document.cookie;
-                ca = ca.split(';');
-                for(var i=0;i < ca.length;i++) {
-                    var c = ca[i];
-                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-                }
-                return null;
-            }
-            //Login Name Prompt
-            function enterUsername() {
-                username = prompt('Enter a Username:', '');
-                document.cookie = "username="+username;
-                console.log(username);
-            }
-            var username = readCookie("username");
-            //if()
-            while(username == "" || username == null)
-            {
-                //username = prompt('Enter a Username:', '');
-                enterUsername();
-            }
-            //document.cookie = "username="+username;
-            //console.log(username);
-            var loading = true;
+<head>
+    <title>Chatroom</title>
+    <meta charset="utf-8">
+    <meta name="Realtime Chatroom Application" content="Realtime Chatroom Application">
+    <meta name="Bigosigos.de & JRehkemper.de" content="SitePoint">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/chat.svg">
 
-            var roomname = readCookie("room");
-            if (roomname == null) {
-                roomname = "main";
-            }
-            document.cookie = "room="+roomname;
-            
-        </script>
+    <!-- Bootstrap css-->
+    <link type="text/css" rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
 
-        <!-- html ---------------------------------------------------------->
-        <div class="container-fluid" id="MainWrapper">
+<body>
+    <script>
+        //Cookies
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie;
+            ca = ca.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+        //Login Name Prompt
+        function enterUsername() {
+            username = prompt('Enter a Username:', '');
+            document.cookie = "username=" + username;
+            console.log(username);
+        }
+        var username = readCookie("username");
+        //if()
+        while (username == "" || username == null) {
+            //username = prompt('Enter a Username:', '');
+            enterUsername();
+        }
+        //document.cookie = "username="+username;
+        //console.log(username);
+        var loading = true;
+
+        var roomname = readCookie("room");
+        if (roomname == null) {
+            roomname = "main";
+        }
+        document.cookie = "room=" + roomname;
+
+    </script>
+
+    <!-- html ---------------------------------------------------------->
+    <div class="container-fluid" id="MainWrapper">
 
         <!-- Cookie Banner -->
         <div id="footer-cookie">
             <span id="description" class="text-center">
-            We are using Cookies for the best User-Experience. By visiting this website you agree to recieving Cookies.
+                We are using Cookies for the best User-Experience. By visiting this website you agree to recieving
+                Cookies.
             </span>
             <span id="accept"><a href="javascript:void(0)" title="Akzeptieren">Akzeptieren</a></span>
         </div>
@@ -70,202 +72,214 @@
             */
             var footerCookie = document.querySelector("#footer-cookie");
             var footerCookieAccept = document.querySelector("#accept");
-        
+
             if (document.cookie.indexOf("dakitecCookieBanner=") == -1) {
                 footerCookie.style.display = "block";
             }
-        
-            footerCookieAccept.onclick = function(e) {
+
+            footerCookieAccept.onclick = function (e) {
                 var cookieDate = new Date();
                 cookieDate.setTime(new Date().getTime() + 31104000000);
-        
+
                 document.cookie = "dakitecCookieBanner = 1; path=/; secure; expires=" + cookieDate.toUTCString();
-        
+
                 footerCookie.style.display = "none";
             };
         </script>
-            
-            <div class="row"><!--margintop-->
-                <!-- left Space -->
-                <div class="col-1 d-none d-sm-none d-md-none">
-                    
-                </div>
-                <!-- Middle Space -->
 
-                <!-- NavButtons -->
-                <div class="navButtonsBar col-10 sticky-top p-4 mx-auto">
-                    <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
-                        <img src="/img/settings.svg" style="width: 2em; height: 2em; float: right; background-color: white; border-radius: 50%; padding:2px;">
+        <div class="row">
+            <!--margintop-->
+            <!-- left Space -->
+            <div class="col-1 d-none d-sm-none d-md-none">
+
+            </div>
+            <!-- Middle Space -->
+
+            <!-- NavButtons -->
+            <div class="navButtonsBar col-10 sticky-top p-4 mx-auto">
+                <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
+                    <img src="/img/settings.svg"
+                        style="width: 2em; height: 2em; float: right; background-color: white; border-radius: 50%; padding:2px;">
+                </div>
+            </div>
+            <!-- Main Area -->
+            <div class="col-lg-10 col-xl-10 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
+
+
+                <div class="col-12 Header pt-3 pb-1 mx-auto">
+                    <h1 class="text-center HeaderM">Realtime Chatroom</h1>
+                    <p class="text-center HeaderM">A bad, unreliable und unsafe way of communication</p>
+                    <hr>
+                    <p class="text-center HeaderM">Just enter a message and start chatting</p>
+                    <p class="text-center HeaderM" style="font-size: 0.7em;">By using this Chatroom you agree to our <a
+                            href="javascript:alert('This is a public Chatroom. Please be aware that everybody can read this.\nThe Messages might be logged on the Server to enhance the User experience. We will not pass this data to others or use it for commercial purposes.')">Terms
+                            of use</a>.</p>
+
+                </div>
+
+
+                <!-- Channelname-->
+                <div class="Channel pt-1 mt-1 sticky-top">
+                    <h5 id="channelName" class="text-center p-1 ChannelM">Main Channel - Everybody can read and write
+                    </h5>
+                    <p class="text-center p-1 ChannelM" id="usercountId">Users</p>
+                </div>
+                <div class="row">
+                    <!-- New Room -->
+                    <div class="col-3 mx-auto" style=" overflow-x: hidden; max-height: 90vh;">
+                        <form id="newRoomForm" action="" class="sticky-top" style="top:00px !important; height: 10vh;">
+                            <input style="width:100% !important" id="newRoomInput">
+                            <button style="width: 100% !important;" class="text-center p-1">Create/Join Room</button>
+                        </form>
+                        <ul id="roomList" class="sticky-top" style="top:0px !important; max-height: 65vh;">
+
+                        </ul>
+                    </div>
+                    <!-- Chatmessages-->
+                    <div class="Chatarea col-9 mx-auto">
+                        <div class="col-lg-12 col-xl-12 mx-auto pt-3 ChatMessages"
+                            style="overflow-y: scroll; overflow-x: hidden;">
+                            <ul id="messages" style="min-height: 45vh; max-height: 75vh;">
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Chatinput-Filed -->
+                <div class="row ChatInput">
+                    <div class="col-12 col-lg-10 col-xl-10 mx-auto fixed-bottom formBackground">
+                        <div class="col-12 col-lg-10 col-xl-8">
+                            <p id="typing"></p>
+                        </div>
+                        <div class="col-12 col-lg-10 col-xl-8 mx-auto ">
+                            <form id="form" action="">
+                                <input class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off"
+                                    autofocus /><button class="col-3 col-lg-3 col-xl-2 text-center">Send</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <!-- Main Area -->
-                <div class="col-lg-10 col-xl-10 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
-                    
-                        
-                        <div class="col-12 Header pt-3 pb-1 mx-auto">
-                            <h1 class="text-center HeaderM">Realtime Chatroom</h1>
-                            <p class="text-center HeaderM">A bad, unreliable und unsafe way of communication</p>
-                            <hr>
-                            <p class="text-center HeaderM">Just enter a message and start chatting</p>
-                            <p class="text-center HeaderM" style="font-size: 0.7em;">By using this Chatroom you agree to our <a href="javascript:alert('This is a public Chatroom. Please be aware that everybody can read this.\nThe Messages might be logged on the Server to enhance the User experience. We will not pass this data to others or use it for commercial purposes.')">Terms of use</a>.</p>
-                            
-                        </div>
-                    
-                        
-                        <!-- Channelname-->
-                        <div class="Channel pt-1 mt-1 sticky-top">
-                            <h5 id="channelName" class="text-center p-1 ChannelM">Main Channel - Everybody can read and write</h5>
-                            <p class="text-center p-1 ChannelM" id="usercountId">Users</p>
-                        </div>
-                        <div class="row" >
-                            <!-- New Room -->
-                            <div class="col-3 mx-auto" style=" overflow-x: hidden; max-height: 90vh;">
-                                <form id="newRoomForm" action="" class="sticky-top" style="top:00px !important; height: 10vh;">
-                                    <input style="width:100% !important" id="newRoomInput">
-                                    <button style="width: 100% !important;" class="text-center p-1">Create/Join Room</button>
-                                </form>
-                                <ul id="roomList" class="sticky-top" style="top:0px !important; max-height: 65vh;">
+            </div>
+            <!-- Right Space -->
+            <div class="col-1 d-none d-sm-none d-md-none">
 
-                                </ul>
-                            </div>
-                            <!-- Chatmessages-->
-                            <div class="Chatarea col-9 mx-auto" >
-                                <div class="col-lg-12 col-xl-12 mx-auto pt-3 ChatMessages" style="overflow-y: scroll; overflow-x: hidden;">
-                                    <ul id="messages" style="min-height: 45vh; max-height: 75vh;">
-
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <!-- Chatinput-Filed -->
-                        <div class="row ChatInput" >
-                            <div class="col-12 col-lg-10 col-xl-10 mx-auto fixed-bottom formBackground">
-                                <div class="col-12 col-lg-10 col-xl-8">
-                                    <p id="typing"></p>
-                                </div>
-                                <div class="col-12 col-lg-10 col-xl-8 mx-auto ">
-                                    <form id="form" action="">
-                                        <input class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off" autofocus/><button class="col-3 col-lg-3 col-xl-2 text-center">Send</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                <!-- Right Space -->
-                <div class="col-1 d-none d-sm-none d-md-none">
-
-                </div>
             </div>
         </div>
-        <!-- Settings Overlay -->
-        <div id="settingsMenu" class="container-fluid" style="height: 100% !important; background: rgba(0,0,0,0.7); position: absolute; top:0; bottom:0; left:0; right: 0; z-index: 2000; display: none;">
-              
-            <div class="text-center col-6 mx-auto p-4" style="background: #fff; width: 50%; height: 50%; margin-top: 10em; border-radius: 2em;">
-                <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
-                    <img src="/img/cancel.svg" style="width: 2em; height: 2em; float: right;">
-                </div>
-                <h3 class="text-center p-4">Settings</h3>
-                <p class="text-center"><a href="javascript:enterUsername()">Change Username</a></p>
+    </div>
+    <!-- Settings Overlay -->
+    <div id="settingsMenu" class="container-fluid"
+        style="height: 100% !important; background: rgba(0,0,0,0.7); position: absolute; top:0; bottom:0; left:0; right: 0; z-index: 2000; display: none;">
+
+        <div class="text-center col-6 mx-auto p-4"
+            style="background: #fff; width: 50%; height: 50%; margin-top: 10em; border-radius: 2em;">
+            <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
+                <img src="/img/cancel.svg" style="width: 2em; height: 2em; float: right;">
             </div>
+            <h3 class="text-center p-4">Settings</h3>
+            <p class="text-center"><a href="javascript:enterUsername()">Change Username</a></p>
         </div>
-        
-        <!-- Bootstrap scripts -->
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js" integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA==" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous"></script>
-        
-        <script>
-            var audio = new Audio('sound/messageSound.mp3');
-            audio.volume = 0.2;
-            var socket = io();
-            var messages = document.getElementById('messages');
-            var form = document.getElementById('form');
-            var input = document.getElementById('input');
-            var usercountId = document.getElementById('usercountID');
+    </div>
+
+    <!-- Bootstrap scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+        integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
+        integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q=="
+        crossorigin="anonymous"></script>
+
+    <script>
+        var audio = new Audio('sound/messageSound.mp3');
+        audio.volume = 0.2;
+        var socket = io();
+        var messages = document.getElementById('messages');
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+        var usercountId = document.getElementById('usercountID');
 
 
-            anime({
-                targets: '#MainWrapper',
-                opacity: [0, 1],
-                duration: 2000,
-            });
-            anime({
-                targets: '.Header',
-                opacity: [0, 1],
-                duration: 2000,
-                delay: 300,
-            });
-            anime({
-                targets: '.HeaderM',
-                opacity: [0, 1],
-                duration: 2000,
-                delay: function(HeaderM, i=100, l) {
-                    return 300 + i * 200;
-                },
-            });
-            anime({
-                targets: '.Channel',
-                opacity: [0, 1],
-                duration: 2000,
-                delay: 600,
-            });
-            anime({
-                targets: '.ChannelM',
-                opacity: [0, 1],
-                duration: 2000,
-                delay: function(ChannelM, i=100, l) {
-                    return 1000 + i * 200;
-                },
-            });
-            anime({
-                targets: 'li',
-                opacity: [0, 1],
-                duration: 2000,
-                delay: function(li, i=100, l) {
-                    return 1300 + i * 200;
-                },
-            });
-            anime({
-                targets: '.ChatInput',
-                opacity: [0, 1],
-                duration: 2000,
-                delay: 900,
-            });
+        anime({
+            targets: '#MainWrapper',
+            opacity: [0, 1],
+            duration: 2000,
+        });
+        anime({
+            targets: '.Header',
+            opacity: [0, 1],
+            duration: 2000,
+            delay: 300,
+        });
+        anime({
+            targets: '.HeaderM',
+            opacity: [0, 1],
+            duration: 2000,
+            delay: function (HeaderM, i = 100, l) {
+                return 300 + i * 200;
+            },
+        });
+        anime({
+            targets: '.Channel',
+            opacity: [0, 1],
+            duration: 2000,
+            delay: 600,
+        });
+        anime({
+            targets: '.ChannelM',
+            opacity: [0, 1],
+            duration: 2000,
+            delay: function (ChannelM, i = 100, l) {
+                return 1000 + i * 200;
+            },
+        });
+        anime({
+            targets: 'li',
+            opacity: [0, 1],
+            duration: 2000,
+            delay: function (li, i = 100, l) {
+                return 1300 + i * 200;
+            },
+        });
+        anime({
+            targets: '.ChatInput',
+            opacity: [0, 1],
+            duration: 2000,
+            delay: 900,
+        });
 
-            loading = false;
+        loading = false;
 
-            if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-                console.info( "This page is reloaded" );
-                socket.emit('refresh');
+        if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+            console.info("This page is reloaded");
+            socket.emit('refresh');
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (input.value) {
+                roomname = readCookie("room");
+                socket.emit('chat message', input.value, username, roomname);
+                console.log(input.value + "in Room " + roomname);
+                input.value = '';
             }
 
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                if (input.value) {
-                    roomname = readCookie("room");
-                    socket.emit('chat message', input.value, username, roomname);
-                    console.log(input.value + "in Room "+roomname);
-                    input.value = '';
-                }
-                
-            });
+        });
 
-            document.getElementById("newRoomForm").addEventListener('submit', function(e) {
-                e.preventDefault();
-                if(newRoomInput.value) {
-                    socket.emit('newRoomCreate', newRoomInput.value);
-                    console.log("roomname" + newRoomInput.value);
-                    roomname = newRoomInput.value;
-                    if(roomname.length == 20)
-                    {
-                        roomname = roomname+" ";
-                    }
-                    newRoomInput.value = '';
-                    document.cookie = "room="+roomname;
+        document.getElementById("newRoomForm").addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (newRoomInput.value) {
+                socket.emit('newRoomCreate', newRoomInput.value);
+                console.log("roomname" + newRoomInput.value);
+                roomname = newRoomInput.value;
+                if (roomname.length == 20) {
+                    roomname = roomname + " ";
                 }
+                newRoomInput.value = '';
+                document.cookie = "room=" + roomname;
 
                 attachMessage("sysMessage", "You joined ", roomname, "");
                 /*var item = document.createElement('li');
@@ -280,176 +294,174 @@
                 //window.scrollTo(0, document.body.scrollHeight);
 
                 displayRoomName();
-            })
-
-            /*document.getElementById('input').addEventListener('input', function(evt) {
-                
-                socket.emit('typing', username);
-                console.log("typing");
-                
-            });*/
-
-            socket.on('connection', function(pusername, proomname) {
-                displayRoomName();
-                var roomname = readCookie("room");
-                if (roomname == proomname) {
-                    attachMessage("sysMessage", pusername, " joined the Chat", "");
-                    /*var item = document.createElement('li');
-                    item.textContent = pusername + " joined the Chat";
-                    item.className = "sysMessage";
-                    messages.appendChild(item);*/
-                    anime({
-                        targets: document.getElementById('messages').lastElementChild,
-                        translateY: [50, 0],
-                        opacity: [0, 1],
-                    });
-                    //window.scrollTo(0, document.body.scrollHeight);
-                    audio.play();
-                }
-            });
-
-            socket.on('disconnected', function(pusername, proomname) {
-                var roomname = readCookie("room");
-                if (roomname == proomname) {
-                    attachMessage("sysMessage", pusername, " left the Chat", "");
-                    /*var item = document.createElement('li');
-                    item.textContent = pusername + " left the Chat";
-                    item.className = "sysMessage";
-                    messages.appendChild(item);*/
-                    anime({
-                        targets: document.getElementById('messages').lastElementChild,
-                        translateY: [50, 0],
-                        opacity: [0, 1],
-                    });
-                    //window.scrollTo(0, document.body.scrollHeight);
-                    audio.play();
-                }
-            });
-
-            socket.on('chat message', function(msg, pusername, proomname) {
-                var roomname = readCookie("room");
-                if(roomname == proomname)
-                {
-                    if(pusername == username)
-                    {
-                        attachMessage("text-left ownMessage", pusername, ": ", msg,"");
-                    }
-                    else{
-                        attachMessage("text-left otherMessage", pusername, ": ", msg, "");
-                    }
-                    /*var item = document.createElement('li');
-                    item.textContent = pusername+": "+msg;
-                    if (pusername == username) {
-                        item.className = "text-left ownMessage";
-                    }
-                    else {
-                        item.className = "text-left otherMessage";
-                    }
-                    messages.appendChild(item);*/
-                    anime({
-                        targets: document.querySelectorAll(".ownMessage:last-child"),
-                        translateX: [50, 0],
-                        translateY: [0, 0],
-                        opacity: [0, 1],
-                    });
-                    anime({
-                        targets: document.querySelectorAll(".otherMessage:last-child"),
-                        translateX: [-50, 0],
-                        translateY: [0, 0],
-                        opacity: [0, 1],
-                    });
-
-                    //$('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
-
-                    if(username != pusername)
-                    {
-                    audio.play();
-                    }
-
-                    displayRoomName();
-                }
-            });
-
-            /*socket.on('typing', function(pusername) {
-                console.log(pusername + "is typing");
-                document.getElementById('typing').innerHTML = "is typing a message";
-            });*/
-
-            socket.on('usercount', function(usercount) {
-                document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
-            });
-
-            socket.on('roomSet', function(roomSet) {
-                var list = document.getElementById('roomList');
-                var rooms = [];
-                try
-                {
-                    for(i = 0; i < roomSet.length; i += 1)
-                    {
-                        str1 = '"javascript:joinRoom(';
-                        str2 = "'";
-                        str3 = "')";
-                        rooms[i] = '<li class="roomListItem"><a href='+str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
-                    }
-                    
-                    list.innerHTML = '<ul id="roomList">' + rooms + '</ul>';
-                }
-                catch
-                {
-                    
-                }
-
-            });
-
-            function joinRoom(roomname) {
-                    socket.emit('joinRoom', roomname);
-                    console.log("Join Room " + roomname);
-                    document.cookie = "room="+roomname;
-                    attachMessage("sysMessage", "You joined ", roomname, "");
-                    anime({
-                        targets: document.getElementById('messages').lastElementChild,
-                        translateY: [50, 0],
-                        opacity: [0, 1],
-                    });
-
-                    /*var item = document.createElement('li');
-                    item.textContent = "You joined "+ roomname;
-                    item.className = "sysMessage";
-                    messages.appendChild(item);
-                    anime({
-                        targets: document.getElementById('messages').lastElementChild,
-                        translateY: [50, 0],
-                        opacity: [0, 1],
-                    });
-                    window.scrollTo(0, document.body.scrollHeight);
-
-                    displayRoomName();*/
-            };
-
-            function displayRoomName() {
-                
-                document.getElementById('channelName').innerHTML = readCookie("room");
             }
 
-            function toggleSettings() {
-                var settings = document.getElementById('settingsMenu');
-                if (settings.style.display == "none")
-                {
-                    settings.style.display = "block";
+
+        })
+
+        /*document.getElementById('input').addEventListener('input', function(evt) {
+            
+            socket.emit('typing', username);
+            console.log("typing");
+            
+        });*/
+
+        socket.on('connection', function (pusername, proomname) {
+            displayRoomName();
+            var roomname = readCookie("room");
+            if (roomname == proomname) {
+                attachMessage("sysMessage", pusername, " joined the Chat", "");
+                /*var item = document.createElement('li');
+                item.textContent = pusername + " joined the Chat";
+                item.className = "sysMessage";
+                messages.appendChild(item);*/
+                anime({
+                    targets: document.getElementById('messages').lastElementChild,
+                    translateY: [50, 0],
+                    opacity: [0, 1],
+                });
+                //window.scrollTo(0, document.body.scrollHeight);
+                audio.play();
+            }
+        });
+
+        socket.on('disconnected', function (pusername, proomname) {
+            var roomname = readCookie("room");
+            if (roomname == proomname) {
+                attachMessage("sysMessage", pusername, " left the Chat", "");
+                /*var item = document.createElement('li');
+                item.textContent = pusername + " left the Chat";
+                item.className = "sysMessage";
+                messages.appendChild(item);*/
+                anime({
+                    targets: document.getElementById('messages').lastElementChild,
+                    translateY: [50, 0],
+                    opacity: [0, 1],
+                });
+                //window.scrollTo(0, document.body.scrollHeight);
+                audio.play();
+            }
+        });
+
+        socket.on('chat message', function (msg, pusername, proomname) {
+            var roomname = readCookie("room");
+            if (roomname == proomname) {
+                if (pusername == username) {
+                    attachMessage("text-left ownMessage", pusername, ": ", msg, "");
                 }
                 else {
-                    settings.style.display = "none";
+                    attachMessage("text-left otherMessage", pusername, ": ", msg, "");
                 }
-            }
+                /*var item = document.createElement('li');
+                item.textContent = pusername+": "+msg;
+                if (pusername == username) {
+                    item.className = "text-left ownMessage";
+                }
+                else {
+                    item.className = "text-left otherMessage";
+                }
+                messages.appendChild(item);*/
+                anime({
+                    targets: document.querySelectorAll(".ownMessage:last-child"),
+                    translateX: [50, 0],
+                    translateY: [0, 0],
+                    opacity: [0, 1],
+                });
+                anime({
+                    targets: document.querySelectorAll(".otherMessage:last-child"),
+                    translateX: [-50, 0],
+                    translateY: [0, 0],
+                    opacity: [0, 1],
+                });
 
-            function attachMessage(className, str1, str2, str3, str4) {
-                var item = document.createElement('li');
-                item.textContent = str1 + str2 + str3 + str4;
-                item.className = className;
-                messages.appendChild(item);
-                window.scrollTo(0, document.body.scrollHeight);
+                //$('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
+
+                if (username != pusername) {
+                    audio.play();
+                }
+
                 displayRoomName();
             }
-        </script>
-    </body>
+        });
+
+        /*socket.on('typing', function(pusername) {
+            console.log(pusername + "is typing");
+            document.getElementById('typing').innerHTML = "is typing a message";
+        });*/
+
+        socket.on('usercount', function (usercount) {
+            document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
+        });
+
+        socket.on('roomSet', function (roomSet) {
+            var list = document.getElementById('roomList');
+            var rooms = [];
+            try {
+                for (i = 0; i < roomSet.length; i += 1) {
+                    str1 = '"javascript:joinRoom(';
+                    str2 = "'";
+                    str3 = "')";
+                    rooms[i] = '<li class="roomListItem"><a href=' + str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
+                }
+
+                list.innerHTML = '<ul id="roomList">' + rooms + '</ul>';
+            }
+            catch
+            {
+
+            }
+
+        });
+
+        function joinRoom(roomname) {
+            socket.emit('joinRoom', roomname);
+            console.log("Join Room " + roomname);
+            document.cookie = "room=" + roomname;
+            attachMessage("sysMessage", "You joined ", roomname, "");
+            anime({
+                targets: document.getElementById('messages').lastElementChild,
+                translateY: [50, 0],
+                opacity: [0, 1],
+            });
+
+            /*var item = document.createElement('li');
+            item.textContent = "You joined "+ roomname;
+            item.className = "sysMessage";
+            messages.appendChild(item);
+            anime({
+                targets: document.getElementById('messages').lastElementChild,
+                translateY: [50, 0],
+                opacity: [0, 1],
+            });
+            window.scrollTo(0, document.body.scrollHeight);
+
+            displayRoomName();*/
+        };
+
+        function displayRoomName() {
+
+            document.getElementById('channelName').innerHTML = readCookie("room");
+        }
+
+        function toggleSettings() {
+            var settings = document.getElementById('settingsMenu');
+            if (settings.style.display == "none") {
+                settings.style.display = "block";
+            }
+            else {
+                settings.style.display = "none";
+            }
+        }
+
+        function attachMessage(className, str1, str2, str3, str4) {
+            var item = document.createElement('li');
+            item.textContent = str1 + str2 + str3 + str4;
+            item.className = className;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+            displayRoomName();
+        }
+    </script>
+</body>
+
 </html>
