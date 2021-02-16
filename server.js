@@ -16,7 +16,7 @@ const { exec } = require('child_process');
 var con = mysql.createConnection({
   host: "192.168.0.215",
   user: "dbuser",
-  password: "chat123",
+  password: "chatroom.bigos21",
   database: "chatdb",
   insecureAuth: true
 });
@@ -52,28 +52,8 @@ io.on('connection', (socket) => {
 
   joinRoomSQL(reqRoom);
 
-  /*var sql = "CREATE TABLE IF NOT EXISTS chatdb.? (ID int NOT NULL auto_increment, Timestamp timestamp NOT NULL DEFAULT 'CURRENT_TIMESTAMP', Messages varchar(1024) NOT NULL, PRIMARY KEY (ID))";
-  var valRoom = reqRoom + "Messages";
-  var val = [valRoom];
-
-  con.query(sql, val, function(err, results)
-  {
-
-  });*/
-
-
-
-
   //roomlist
   roomSet();
-  /*var roomlist = socket.rooms;
-  var roomSet = roomSetSQL();
-  roomlist.forEach(print);
-  function print(values) {
-    printValues(values);
-  };
-  console.log("roomSet " + roomSet);
-  io.emit('roomSet', roomSet);*/
 
   //usercount
   usercount++;
@@ -87,24 +67,10 @@ io.on('connection', (socket) => {
     io.sockets.in(reqRoom).emit('usercount', usercount);
   });
 
-  /*socket.on('refresh', (socket) => {
-    console.log('a user left');
-    io.emit('disconnected');
-    usercount--;
-    io.emit('usercount', usercount);
-  });*/
 
   socket.on('chat message', (msg, username, proomname) => {
     //roomlist
-    /*var roomlist = socket.rooms;
-    var roomSet = roomSetSQL();*/
     roomSet();
-    /*roomlist.forEach(print);
-    function print(values) {
-      printValues(values);
-    }*/
-    /*console.log("roomSet " + roomSet);
-    io.emit('roomSet', roomSet);*/
 
     //chat Message
     io.sockets.in(proomname).emit('chat message', msg, username, proomname);
@@ -119,6 +85,7 @@ io.on('connection', (socket) => {
     socket.in(roomName).emit('connection');
     console.log("New Room created " + roomName);
     joinRoomSQL(roomName);
+    roomSet();
   });
 
   //join Room
@@ -139,70 +106,87 @@ io.on('connection', (socket) => {
     }
   };
 
-  function executeSQL(sql, val) {
+  function executeSQL(sql, val, column) {
     con.query(sql, val, function (err, results) {
-      console.log("execute sql", err);
+      if(err)
+      {
+        if (err.code != "ER_DUP_ENTRY")
+        {
+          console.log("execute sql error:", err);
+        }
+      }
     });
   };
 
   function joinRoomSQL(room) {
-
-    if (booleanSQL("Rooms", "Room", room) == false) {
+    try {
       var sql = "INSERT INTO chatdb.Rooms (Room) VALUES (?);";
       var val = [room];
       executeSQL(sql, val);
-      console.log("room created")
     }
-    else {
-      console.log("already exists");
+    catch {
     }
-    var sql = "CREATE TABLE IF NOT EXISTS chatdb.? (ID int NOT NULL auto_increment, Timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, Messages varchar(1024) NOT NULL, PRIMARY KEY (ID))";
+    var sql = "CREATE TABLE IF NOT EXISTS chatdb.?? (ID int NOT NULL auto_increment, Timestamp1 timestamp DEFAULT CURRENT_TIMESTAMP,User varchar(256) NOT NULL , Message varchar(1024) NOT NULL, PRIMARY KEY (ID))";
     var val = [room + "Message"];
     executeSQL(sql, val);
   };
 
   function MesseageSQL(user, message, room) {
-    var sql = "INSERT INTO chatdb.? (User, Message) VALUES (?, ?);";
+    var sql = "INSERT INTO ?? (User, Message) VALUES (?, ?);";
     var val = [room+"Message", user, message];
     executeSQL(sql, val);
   };
 
-  function roomSetSQL() {
+  function roomSet() {
     sql = "SELECT Room FROM chatdb.Rooms;";
+    var roomArr = [];
     con.query(sql, function (err, rows, fields) {
-      var arr = [];
-      for (i = 0; i < rows.length; i++) {
-        arr.push(rows[i]);
-      }
-      return arr;
+      Object.keys(rows).forEach(function(key) {
+        var row = rows[key];
+        //console.log("Object.key "+row.Room);
+        roomArr.push(row.Room);
+      });
+      //console.log("roomSet " + roomArr[0]);
+      io.emit('roomSet', roomArr);
     });
   };
 
-  function roomSet() {
-    var roomSet = roomSetSQL();
-    console.log("roomSet " + roomSet);
-    io.emit('roomSet', roomSet);
-  };
 
   function booleanSQL(table, column, value) {
-    var sql = "SELECT IF(  EXISTS(SELECT ? FROM chatdb.? WHERE ? = '?' ),'true','false' )AS result;";
+    //var sql = "SELECT IF (EXISTS(SELECT ? FROM chatdb.?? WHERE ? = ?),'true','false' )AS result;";
     var val = [column, table, column, value];
-    var result = executeSQL(sql, val);
-    console.log(result);
-    return result;
+    //var sql = "SELECT ? FROM chatdb.?? WHERE ? = ?;";
+    var sql = "SELECT EXISTS(SELECT ? from ?? where ? = ?) as result;";
+    var result = [];
+    var returnValue;
 
+    con.query(sql, val, function (err, rows) {
+      if(err)
+      {
+        console.log("execute sql error:", err);
+      };
+      console.log("BooleanSQL Result:");
+      console.log(rows);
 
-  }
+      Object.keys(rows).forEach(function(key) {
+        var row = rows[key];
+        console.log("Row.result "+row.result);
+        result.push(row.result);
+        returnValue = row.result;
+      });
+      if (returnValue == 1)
+      {
+        console.log("Boolean True");
+        return true;
+      }
+      else
+      {
+        console.log("Boolean False");
+        return false;
+      }
+    });
+    
+  };
 
 
 });
-
-
-
-
-
-
-
-
-
-

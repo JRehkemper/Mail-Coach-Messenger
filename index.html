@@ -280,12 +280,8 @@
                 }
                 newRoomInput.value = '';
                 document.cookie = "room=" + roomname;
-
-                attachMessage("sysMessage", "You joined ", roomname, "", "");
-                /*var item = document.createElement('li');
-                item.textContent = "You joined "+ roomname;
-                item.className = "sysMessage";
-                messages.appendChild(item);*/
+                var str = "You joined "+roomname;
+                attachMessage("sysMessage", str);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
                     translateY: [50, 0],
@@ -295,26 +291,15 @@
 
                 displayRoomName();
             }
-
-
         })
 
-        /*document.getElementById('input').addEventListener('input', function(evt) {
-            
-            socket.emit('typing', username);
-            console.log("typing");
-            
-        });*/
 
         socket.on('connection', function (pusername, proomname) {
             displayRoomName();
             var roomname = readCookie("room");
             if (roomname == proomname) {
-                attachMessage("sysMessage", pusername, " joined the Chat", "", "");
-                /*var item = document.createElement('li');
-                item.textContent = pusername + " joined the Chat";
-                item.className = "sysMessage";
-                messages.appendChild(item);*/
+                var str = pusername + " joined the Chat";
+                attachMessage("sysMessage", str);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
                     translateY: [50, 0],
@@ -328,11 +313,8 @@
         socket.on('disconnected', function (pusername, proomname) {
             var roomname = readCookie("room");
             if (roomname == proomname) {
-                attachMessage("sysMessage", pusername, " left the Chat", "", "");
-                /*var item = document.createElement('li');
-                item.textContent = pusername + " left the Chat";
-                item.className = "sysMessage";
-                messages.appendChild(item);*/
+                var str = pusername + " left the Chat";
+                attachMessage("sysMessage", str);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
                     translateY: [50, 0],
@@ -346,21 +328,13 @@
         socket.on('chat message', function (msg, pusername, proomname) {
             var roomname = readCookie("room");
             if (roomname == proomname) {
+                var str = pusername + ": " + msg;
                 if (pusername == username) {
-                    attachMessage("text-left ownMessage", pusername, ": ", msg, "");
+                    attachMessage("text-left ownMessage", str);
                 }
                 else {
-                    attachMessage("text-left otherMessage", pusername, ": ", msg, "");
+                    attachMessage("text-left otherMessage", str);
                 }
-                /*var item = document.createElement('li');
-                item.textContent = pusername+": "+msg;
-                if (pusername == username) {
-                    item.className = "text-left ownMessage";
-                }
-                else {
-                    item.className = "text-left otherMessage";
-                }
-                messages.appendChild(item);*/
                 anime({
                     targets: document.querySelectorAll(".ownMessage:last-child"),
                     translateX: [50, 0],
@@ -384,11 +358,6 @@
             }
         });
 
-        /*socket.on('typing', function(pusername) {
-            console.log(pusername + "is typing");
-            document.getElementById('typing').innerHTML = "is typing a message";
-        });*/
-
         socket.on('usercount', function (usercount) {
             document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
         });
@@ -403,8 +372,8 @@
                     str3 = "')";
                     rooms[i] = '<li class="roomListItem"><a href=' + str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
                 }
-
-                list.innerHTML = '<ul id="roomList">' + rooms + '</ul>';
+                
+                list.innerHTML = '<ul id="roomList">' + rooms.join("") + '</ul>';
             }
             catch
             {
@@ -417,7 +386,8 @@
             socket.emit('joinRoom', roomname);
             console.log("Join Room " + roomname);
             document.cookie = "room=" + roomname;
-            attachMessage("sysMessage", "You joined ", roomname, "");
+            var str ="You joined "+roomname;
+            attachMessage("sysMessage", str);
             anime({
                 targets: document.getElementById('messages').lastElementChild,
                 translateY: [50, 0],
@@ -453,9 +423,9 @@
             }
         }
 
-        function attachMessage(className, str1, str2, str3, str4) {
+        function attachMessage(className, str) {
             var item = document.createElement('li');
-            item.textContent = str1 + str2 + str3 + str4;
+            item.textContent = str;
             item.className = className;
             messages.appendChild(item);
             window.scrollTo(0, document.body.scrollHeight);
