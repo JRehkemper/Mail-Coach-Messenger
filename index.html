@@ -51,6 +51,14 @@
         }
         document.cookie = "room=" + roomname;
 
+        //ChatVerlauf API
+        var apiReq = new XMLHttpRequest();
+        var url ="/m/"+roomname;
+        apiReq.open("GET", url, false);
+        apiReq.send(null);
+        console.log("ApiResponse");
+        console.log(apiReq.responseText);
+
     </script>
 
     <!-- html ---------------------------------------------------------->
@@ -270,7 +278,7 @@
         });
 
         document.getElementById("newRoomForm").addEventListener('submit', function (e) {
-            e.preventDefault();
+            //e.preventDefault();
             if (newRoomInput.value) {
                 socket.emit('newRoomCreate', newRoomInput.value);
                 console.log("roomname" + newRoomInput.value);
