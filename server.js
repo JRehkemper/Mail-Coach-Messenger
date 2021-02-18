@@ -44,12 +44,13 @@ app.get('/', (req, res) => {
 app.get('/m/:room', function(req, res) {
   var testArr = ["hallo","test","ciao"];
   //res.send("Room id is "+req.params.room);
-  var sql = "SELECT Message, User FROM chatdb.??;";
+  var sql = "SELECT Message, User FROM chatdb.?? ORDER BY Timestamp1 DESC LIMIT 100;";
   var val = [req.params.room+"Message"];
   var messageArr = [];
   var userArr = [];
   var resArr = [];
-  resArr.push(req.params.room);
+  var counter = 0;
+  //resArr.push(req.params.room);
   con.query(sql, val, function (err, rows, fields) {
     if(err) {console.log("Api Error: "+err);};
     Object.keys(rows).forEach(function(key) {
@@ -57,8 +58,11 @@ app.get('/m/:room', function(req, res) {
       //console.log("Object.key "+row.Room);
       messageArr.push(row.Message);
       userArr.push(row.User);
-      var str = row.User+": "+row.Message;
-      resArr.push(str);
+      //var str = row.User+": "+row.Message;
+      //resArr.push(str);
+      
+      resArr.push(row.User);
+      resArr.push(row.Message);
     });
     res.send(resArr);
   });
