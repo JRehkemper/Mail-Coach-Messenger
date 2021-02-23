@@ -106,12 +106,12 @@ io.on('connection', (socket) => {
 
   });
 
-  socket.on('newRoomCreate', (roomName) => {
+  socket.on('newRoomCreate', (roomName, logging, password) => {
     socket.leave("main");
     socket.join(roomName);
     socket.in(roomName).emit('connection');
     console.log("New Room created " + roomName);
-    joinRoomSQL(roomName);
+    joinRoomSQL(roomName, logging, password);
     roomSet();
   });
 
@@ -145,17 +145,20 @@ io.on('connection', (socket) => {
     });
   };
 
-  function joinRoomSQL(room) {
+  function joinRoomSQL(room, logging, password) {
     try {
-      var sql = "INSERT INTO chatdb.Rooms (Room) VALUES (?);";
-      var val = [room];
+      var sql = "INSERT INTO chatdb.Rooms (Room, Logging, Password) VALUES (?,?,?);";
+      var val = [room, logging, password];
       executeSQL(sql, val);
     }
     catch {
+      //nothing
     }
-    var sql = "CREATE TABLE IF NOT EXISTS chatdb.?? (ID int NOT NULL auto_increment, Timestamp1 timestamp DEFAULT CURRENT_TIMESTAMP,User varchar(256) NOT NULL , Message varchar(1024) NOT NULL, PRIMARY KEY (ID))";
-    var val = [room + "Message"];
-    executeSQL(sql, val);
+    if(logging == true) {
+      var sql = "CREATE TABLE IF NOT EXISTS chatdb.?? (ID int NOT NULL auto_increment, Timestamp1 timestamp DEFAULT CURRENT_TIMESTAMP,User varchar(256) NOT NULL , Message varchar(1024) NOT NULL, PRIMARY KEY (ID))";
+      var val = [room + "Message"];
+      executeSQL(sql, val);
+    }
   };
 
   function MesseageSQL(user, message, room) {

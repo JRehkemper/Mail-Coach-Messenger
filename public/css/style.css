@@ -66,7 +66,9 @@ body {
 
 .formBackground {
     background-color: var(--color5); 
-    box-shadow: 0px 0px 2em 5px #111;
+    /*box-shadow: 0px 0px 2em 5px #111;*/
+    /*margin-top: 10px;*/
+    border-radius: 1em;
 }
       
 #input { 
@@ -120,7 +122,7 @@ body {
 }
 
 .sysMessage {
-    width:100%;
+    width:99%;
 }
 
 #newRoomForm input {
@@ -129,6 +131,23 @@ body {
 }
 
 #newRoomForm button {
+    background:var(--color5); 
+    border: none;
+    padding-top: 0 1rem; 
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    border-radius: 3px; 
+    outline: none; 
+    color: #fff; 
+    padding: 1em;
+}
+
+#newRoomFormOverlay input {
+    border-radius: 2rem;
+    padding:0 1em;
+}
+
+#newRoomFormOverlay button {
     background:var(--color5); 
     border: none;
     padding-top: 0 1rem; 
