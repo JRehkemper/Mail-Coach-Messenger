@@ -31,7 +31,6 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
   console.log("recieved Get Request");
-  //console.log(document.cookie);
   console.log(req.cookies['username']);
   reqRoom = req.cookies['room'];
   username = req.cookies['username'];
@@ -124,10 +123,25 @@ io.on('connection', (socket) => {
 
   //join Room
   socket.on('joinRoom', (roomName) => {
-    socket.join(roomName);
-    socket.in(roomName).emit('connection');
-    console.log("Room joined");
-    joinRoomSQL(roomName);
+    var sql = "SELECT Password FROM Rooms WHERE Room = ?;";
+    var val = [roomName];
+    var password;
+    con.query(sql, val, function (err, rows, fields) {
+      if(err) {console.log(err);}
+      else {
+        Object.keys(rows).forEach(function(key) {
+          var row = rows[key];
+          password = row.Password;
+        });
+      }      
+    });
+    if(password == null)
+      {
+        socket.join(roomName);
+        socket.in(roomName).emit('connection');
+        console.log("Room joined");
+        joinRoomSQL(roomName);
+      }
   });
 
   function executeSQL(sql, val, column) {
@@ -145,6 +159,10 @@ io.on('connection', (socket) => {
   function joinRoomSQL(room, logging, password) {
     try {
       var sql = "INSERT INTO chatdb.Rooms (Room, Logging, Password) VALUES (?,?,?);";
+      if(logging == null)
+      {
+        logging = 1;
+      }
       var val = [room, logging, password];
       executeSQL(sql, val);
     }
