@@ -42,30 +42,37 @@ app.get('/', (req, res) => {
 });
 
 app.get('/m/:room', function(req, res) {
-  var testArr = ["hallo","test","ciao"];
-  //res.send("Room id is "+req.params.room);
-  var sql = "SELECT Message, User FROM chatdb.?? ORDER BY Timestamp1 DESC LIMIT 100;";
-  var val = [req.params.room+"Message"];
-  var messageArr = [];
-  var userArr = [];
-  var resArr = [];
-  var counter = 0;
-  //resArr.push(req.params.room);
-  con.query(sql, val, function (err, rows, fields) {
-    if(err) {console.log("Api Error: "+err);};
-    Object.keys(rows).forEach(function(key) {
-      var row = rows[key];
-      //console.log("Object.key "+row.Room);
-      messageArr.push(row.Message);
-      userArr.push(row.User);
-      //var str = row.User+": "+row.Message;
-      //resArr.push(str);
-      
-      resArr.push(row.User);
-      resArr.push(row.Message);
+  try {
+    var sql = "SELECT Message, User FROM chatdb.?? ORDER BY Timestamp1 DESC LIMIT 100;";
+    var val = [req.params.room+"Message"];
+    var messageArr = [];
+    var userArr = [];
+    var resArr = [];
+    var counter = 0;
+    //resArr.push(req.params.room);
+    con.query(sql, val, function (err, rows, fields) {
+      if(err) {console.log("Api Error: "+err);}
+      else {
+        Object.keys(rows).forEach(function(key) {
+          var row = rows[key];
+          //console.log("Object.key "+row.Room);
+          messageArr.push(row.Message);
+          userArr.push(row.User);
+          //var str = row.User+": "+row.Message;
+          //resArr.push(str);
+          
+          resArr.push(row.User);
+          resArr.push(row.Message);
+        });
+      }
+      res.send(resArr);
     });
+  }
+  catch{
+    resArr.push("System");
+    resArr.push("This Room is not logging any Messages");
     res.send(resArr);
-  });
+  }
 });
 
 http.listen(3000, () => {
@@ -123,16 +130,6 @@ io.on('connection', (socket) => {
     joinRoomSQL(roomName);
   });
 
-  function printValues(values) {
-    if (values != null) {
-      if (values.length != 20) {
-        values = values.replace(' ', '');
-        console.log(values);
-        roomSet.push(values);
-      }
-    }
-  };
-
   function executeSQL(sql, val, column) {
     con.query(sql, val, function (err, results) {
       if(err)
@@ -162,9 +159,30 @@ io.on('connection', (socket) => {
   };
 
   function MesseageSQL(user, message, room) {
-    var sql = "INSERT INTO ?? (User, Message) VALUES (?, ?);";
-    var val = [room+"Message", user, message];
-    executeSQL(sql, val);
+    var sql = "SELECT Logging from Rooms WHERE Room = ?;";
+    var val = [room];
+    var returnValue;
+    con.query(sql, val, function (err, rows) {
+      if(err)
+      {
+        console.log("execute sql error:", err);
+      };
+      console.log("BooleanSQL Result:");
+      console.log(rows);
+
+      Object.keys(rows).forEach(function(key) {
+        var row = rows[key];
+        console.log("Row.result "+row.Logging);
+        returnValue = row.Logging;
+      });
+    });
+
+    if(returnValue == 1)
+    {
+      var sql = "INSERT INTO ?? (User, Message) VALUES (?, ?);";
+      var val = [room+"Message", user, message];
+      executeSQL(sql, val);
+    };
   };
 
   function roomSet() {

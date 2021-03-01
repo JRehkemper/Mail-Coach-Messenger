@@ -8,7 +8,7 @@
     <meta name="Bigosigos.de & JRehkemper.de" content="SitePoint">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" href="/css/style.css">
-    <link rel="shortcut icon" type="image/x-icon" href="/img/MailCoach2.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/MailCoach.png">
 
     <!-- Bootstrap css-->
     <link type="text/css" rel="stylesheet"
@@ -40,6 +40,7 @@
         while (username == "" || username == null) {
             //username = prompt('Enter a Username:', '');
             enterUsername();
+            location.reload();
         }
         //document.cookie = "username="+username;
         //console.log(username);
@@ -50,7 +51,6 @@
             roomname = "main";
         }
         document.cookie = "room=" + roomname;
-
         
 
     </script>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4 align-items-center">
-                            <img src="img/MailCoach2.png" style="width: 250px; height: auto; float: right;">
+                            <img src="img/MailCoach2.png" style="width: auto; max-width: 100%; height: 150px; float: right; object-fit: cover;">
                         </div>
                         <div class="col-4">
                             <h1 class="text-center HeaderM">Mail Coach</h1>
@@ -351,6 +351,7 @@
             if(newRoomInputOverlay.value)
             {
                 var logState;
+                var passwordValue;
                 if (logging.checked == true)
                 {
                     logState = 0;
@@ -359,17 +360,24 @@
                 {
                     logState = 1;
                 }
-                socket.emit('newRoomCreate', newRoomInputOverlay.value, logState, password.value);
                 console.log("roomname " + newRoomInputOverlay.value);
                 console.log("logging "+logging.checked);
                 console.log("Password "+password.value);
                 roomname = newRoomInputOverlay.value;
-                if(roomname.length == 20) {
-                    roomname = roomname + " ";
+                passwordValue = password.value;
+                if (passwordValue == "")
+                {
+                    passwordValue = null;
                 }
+                if(roomname.length == 20) {
+                    roomname = roomname + "_";
+                }
+                roomname = roomname.replace(" ", "_");
                 newRoomInputOverlay.value = '';
+                logging.checked = false;
                 password.value = '';
                 document.cookie = "room="+roomname;
+                socket.emit('newRoomCreate', roomname, logState, passwordValue);
                 var str = "You joind "+roomname;
                 attachMessage("sysMessage", str);
                 anime({
@@ -386,7 +394,7 @@
         socket.on('connection', function (pusername, proomname) {
             displayRoomName();
             var roomname = readCookie("room");
-            if (roomname == proomname) {
+            if (roomname == proomname && pusername != null) {
                 var str = pusername + " joined the Chat";
                 attachMessage("sysMessage", str);
                 anime({
@@ -401,7 +409,7 @@
 
         socket.on('disconnected', function (pusername, proomname) {
             var roomname = readCookie("room");
-            if (roomname == proomname) {
+            if (roomname == proomname && pusername != null) {
                 var str = pusername + " left the Chat";
                 attachMessage("sysMessage", str);
                 anime({

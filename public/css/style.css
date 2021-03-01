@@ -1,11 +1,19 @@
 /*Color Look-Up Table*/
 :root {
-    --color1: #2C4B85;
+    /*--color1: #2C4B85;
     --color2: #333E52;
     --color3: #132038;
     --color4: #546585;
     --color5: #0E182B;
-    --color6: #0b1322;
+    --color6: #0b1322;*/
+
+    --color1: #274e97;
+    --color2: #2a4270;
+    --color3: #1a2b4d;
+    --color4: #546585;
+    --color5: #1b2f53;
+    --color6: #10203f;
+
 }
 
 
@@ -46,12 +54,12 @@ body {
 }
 
 .Header {
-    background-color: var(--color5);
+    background-color: var(--color2); /*color5*/
     border-radius: 1em;
 }
 
 .Channel {
-    background-color: var(--color5);
+    background-color: var(--color2); /*color5*/
     border-radius: 1em;
 }
 
@@ -131,7 +139,7 @@ body {
 }
 
 #newRoomForm button {
-    background:var(--color5); 
+    background:var(--color2); 
     border: none;
     padding-top: 0 1rem; 
     margin-top: 0.25rem;
