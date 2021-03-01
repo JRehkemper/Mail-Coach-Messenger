@@ -51,10 +51,12 @@
         }
         document.cookie = "room=" + roomname;
 
+        
+
     </script>
 
     <!-- html ---------------------------------------------------------->
-    <div class="container-fluid" id="MainWrapper">
+    <div class="container-fluid" id="MainWrapper" style="height: 100%">
 
         <!-- Cookie Banner -->
         <div id="footer-cookie">
@@ -87,7 +89,7 @@
             };
         </script>
 
-        <div class="row">
+        <div class="row pt-3" style="height: 100%;">
             <!--margintop-->
             <!-- left Space -->
             <div class="col-1 d-none d-sm-none d-md-none">
@@ -96,21 +98,26 @@
             <!-- Middle Space -->
 
             <!-- NavButtons -->
-            <div class="navButtonsBar col-10 sticky-top p-4 mx-auto">
+            <!--<div class="navButtonsBar col-10 sticky-top p-4 mx-auto">
                 <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
                     <img src="/img/settings.svg"
                         style="width: 2em; height: 2em; float: right; background-color: white; border-radius: 50%; padding:2px;">
                 </div>
-            </div>
+            </div>-->
             <!-- Main Area -->
-            <div class="col-lg-10 col-xl-10 mx-auto HeaderDiv p-3" style="box-shadow: 0px 0px 2em 5px #111;">
+            <div class="col-lg-10 col-xl-10 mx-auto HeaderDiv p-3">
 
 
                 <div class="col-12 Header pt-3 pb-1 mx-auto">
+                    <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
+                        <img src="/img/settings.svg"
+                            style="width: 2em; height: 2em; float: right; background-color: white; border-radius: 50%; padding:2px;">
+                    </div>
                     <h1 class="text-center HeaderM">Realtime Chatroom</h1>
                     <p class="text-center HeaderM">A bad, unreliable und unsafe way of communication</p>
-                    <hr>
-                    <p class="text-center HeaderM">Just enter a message and start chatting</p>
+                    
+                    <!--<hr>
+                    <p class="text-center HeaderM">Just enter a message and start chatting</p>-->
                     <p class="text-center HeaderM" style="font-size: 0.7em;">By using this Chatroom you agree to our <a
                             href="javascript:alert('This is a public Chatroom. Please be aware that everybody can read this.\nThe Messages might be logged on the Server to enhance the User experience. We will not pass this data to others or use it for commercial purposes.')">Terms
                             of use</a>.</p>
@@ -119,36 +126,48 @@
 
 
                 <!-- Channelname-->
-                <div class="Channel pt-1 mt-1 sticky-top">
+                <div class="Channel pt-1 mt-1">
                     <h5 id="channelName" class="text-center p-1 ChannelM">Main Channel - Everybody can read and write
                     </h5>
                     <p class="text-center p-1 ChannelM" id="usercountId">Users</p>
                 </div>
-                <div class="row">
+                <div class="row" style="height: 63%;">
                     <!-- New Room -->
-                    <div class="col-3 mx-auto" style=" overflow-x: hidden; max-height: 90vh;">
-                        <form id="newRoomForm" action="" class="sticky-top" style="top:00px !important; height: 10vh;">
-                            <input style="width:100% !important" id="newRoomInput">
-                            <button style="width: 100% !important;" class="text-center p-1">Create/Join Room</button>
+                    <div class="col-3 mx-auto" style="overflow-x: hidden; height: 100%;">
+                        <form id="newRoomForm" action="">
+                            <!---<input style="width:100% !important" id="newRoomInput">
+                            <button style="width: 100% !important;" class="text-center p-1">Join Room</button>-->
+                            <button style="width: 100% !important;" class="text-center p-1" onclick="toggleRoomOverlay()">Create Room</button>
                         </form>
-                        <ul id="roomList" class="sticky-top" style="top:0px !important; max-height: 65vh;">
+                        <ul id="roomList">
 
                         </ul>
                     </div>
                     <!-- Chatmessages-->
-                    <div class="Chatarea col-9 mx-auto">
-                        <div class="col-lg-12 col-xl-12 mx-auto pt-3 ChatMessages"
-                            style="overflow-y: scroll; overflow-x: hidden;">
-                            <ul id="messages" style="min-height: 45vh; max-height: 75vh;">
+                    <div class="Chatarea col-9 mx-auto" style="height: 100%;">
+                        <div class="col-lg-12 col-xl-12 mx-auto pt-3 ChatMessages" style="height: 100%;">
+                            <ul id="messages" style="overflow-y: scroll; overflow-x: hidden; height: 100% !important">
 
                             </ul>
                         </div>
                     </div>
-
+                    
                 </div>
                 <!-- Chatinput-Filed -->
-                <div class="row ChatInput">
-                    <div class="col-12 col-lg-10 col-xl-10 mx-auto fixed-bottom formBackground">
+                <div class="col-12 mx-auto formBackground p-1">
+                    <div class="col-12 col-lg-10 col-xl-8 ">
+                        <p id="typing"></p>
+                    </div>
+                    <div class="col-12 col-lg-10 col-xl-8 mx-auto ">
+                        <form id="form" action="">
+                            <input class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off"
+                                autofocus /><button class="col-3 col-lg-3 col-xl-2 text-center">Send</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Chatinput-Filed -->
+                <!--<div class="row ChatInput" >
+                    <div class="col-12 col-lg-10 col-xl-10 mx-auto formBackground" style="height: 10vh !important;">
                         <div class="col-12 col-lg-10 col-xl-8">
                             <p id="typing"></p>
                         </div>
@@ -159,7 +178,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
             <!-- Right Space -->
             <div class="col-1 d-none d-sm-none d-md-none">
@@ -178,6 +197,29 @@
             </div>
             <h3 class="text-center p-4">Settings</h3>
             <p class="text-center"><a href="javascript:enterUsername()">Change Username</a></p>
+        </div>
+    </div>
+    <!-- Create Room Overlay -->
+    <div id="roomMenu" class="container-fluid"
+        style="height: 100% !important; background: rgba(0,0,0,0.7); position: absolute; top:0; bottom:0; left:0; right: 0; z-index: 2000; display: none;">
+
+        <div class="text-center col-6 mx-auto p-4"
+            style="background: #fff; width: 50%; height: 50%; margin-top: 10em; border-radius: 2em;">
+            <div id="settingIcon" class="mx-left" onclick="toggleRoomOverlay()">
+                <img src="/img/cancel.svg" style="width: 2em; height: 2em; float: right;">
+            </div>
+            <div class="text-center mx-auto" style="width: 60%;">
+                <h3 class="text-center p-4">Create New Room</h3>
+                <form id="newRoomFormOverlay" action="" >
+                    <input style="width:100% !important; margin-bottom: 1em;" id="newRoomInputOverlay" placeholder="Roomname">
+
+                    <input type="checkbox" id="logging">
+                    <lable for="logging">Deactivate Logging in this Chatroom</lable>
+
+                    <input style="width:100% !important; margin-top:1em;" type="password" id="password" placeholder="Enter Password (Optional)">
+                    <button style="width: 100% !important; margin-top: 1em;" class="text-center p-1">Create Room</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -202,6 +244,9 @@
         var input = document.getElementById('input');
         var usercountId = document.getElementById('usercountID');
 
+        //ChatVerlauf API
+        chatApi(roomname);
+        
 
         anime({
             targets: '#MainWrapper',
@@ -229,11 +274,11 @@
             delay: 600,
         });
         anime({
-            targets: '.ChannelM',
+            targets: '.roomListItem',
             opacity: [0, 1],
             duration: 2000,
-            delay: function (ChannelM, i = 100, l) {
-                return 1000 + i * 200;
+            delay: function (roomListItem, i = 100, l) {
+                return 600 + i * 50;
             },
         });
         anime({
@@ -241,7 +286,7 @@
             opacity: [0, 1],
             duration: 2000,
             delay: function (li, i = 100, l) {
-                return 1300 + i * 200;
+                return 600 + i * 50;
             },
         });
         anime({
@@ -261,6 +306,7 @@
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             if (input.value) {
+                username = readCookie("username");
                 roomname = readCookie("room");
                 socket.emit('chat message', input.value, username, roomname);
                 console.log(input.value + "in Room " + roomname);
@@ -271,7 +317,7 @@
 
         document.getElementById("newRoomForm").addEventListener('submit', function (e) {
             e.preventDefault();
-            if (newRoomInput.value) {
+            /*if (newRoomInput.value) {
                 socket.emit('newRoomCreate', newRoomInput.value);
                 console.log("roomname" + newRoomInput.value);
                 roomname = newRoomInput.value;
@@ -280,12 +326,8 @@
                 }
                 newRoomInput.value = '';
                 document.cookie = "room=" + roomname;
-
-                attachMessage("sysMessage", "You joined ", roomname, "", "");
-                /*var item = document.createElement('li');
-                item.textContent = "You joined "+ roomname;
-                item.className = "sysMessage";
-                messages.appendChild(item);*/
+                var str = "You joined "+roomname;
+                attachMessage("sysMessage", str);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
                     translateY: [50, 0],
@@ -294,27 +336,52 @@
                 //window.scrollTo(0, document.body.scrollHeight);
 
                 displayRoomName();
-            }
-
-
+            }*/
         })
 
-        /*document.getElementById('input').addEventListener('input', function(evt) {
-            
-            socket.emit('typing', username);
-            console.log("typing");
-            
-        });*/
+        document.getElementById("newRoomFormOverlay").addEventListener('submit', function (e) {
+            e.preventDefault();
+            if(newRoomInputOverlay.value)
+            {
+                var logState;
+                if (logging.checked == true)
+                {
+                    logState = 0;
+                }
+                else if (logging.checked == false)
+                {
+                    logState = 1;
+                }
+                socket.emit('newRoomCreate', newRoomInputOverlay.value, logState, password.value);
+                console.log("roomname " + newRoomInputOverlay.value);
+                console.log("logging "+logging.checked);
+                console.log("Password "+password.value);
+                roomname = newRoomInputOverlay.value;
+                if(roomname.length == 20) {
+                    roomname = roomname + " ";
+                }
+                newRoomInputOverlay.value = '';
+                password.value = '';
+                document.cookie = "room="+roomname;
+                var str = "You joind "+roomname;
+                attachMessage("sysMessage", str);
+                anime({
+                    targets: document.getElementById('messages').lastElementChild,
+                    translateY: [50, 0],
+                    opacity: [0, 1],
+                });
+                displayRoomName();
+                toggleRoomOverlay();
+            };
+        });
+
 
         socket.on('connection', function (pusername, proomname) {
             displayRoomName();
             var roomname = readCookie("room");
             if (roomname == proomname) {
-                attachMessage("sysMessage", pusername, " joined the Chat", "", "");
-                /*var item = document.createElement('li');
-                item.textContent = pusername + " joined the Chat";
-                item.className = "sysMessage";
-                messages.appendChild(item);*/
+                var str = pusername + " joined the Chat";
+                attachMessage("sysMessage", str);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
                     translateY: [50, 0],
@@ -328,11 +395,8 @@
         socket.on('disconnected', function (pusername, proomname) {
             var roomname = readCookie("room");
             if (roomname == proomname) {
-                attachMessage("sysMessage", pusername, " left the Chat", "", "");
-                /*var item = document.createElement('li');
-                item.textContent = pusername + " left the Chat";
-                item.className = "sysMessage";
-                messages.appendChild(item);*/
+                var str = pusername + " left the Chat";
+                attachMessage("sysMessage", str);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
                     translateY: [50, 0],
@@ -346,21 +410,13 @@
         socket.on('chat message', function (msg, pusername, proomname) {
             var roomname = readCookie("room");
             if (roomname == proomname) {
+                var str = pusername + ": " + msg;
                 if (pusername == username) {
-                    attachMessage("text-left ownMessage", pusername, ": ", msg, "");
+                    attachMessage("text-left ownMessage", str);
                 }
                 else {
-                    attachMessage("text-left otherMessage", pusername, ": ", msg, "");
+                    attachMessage("text-left otherMessage", str);
                 }
-                /*var item = document.createElement('li');
-                item.textContent = pusername+": "+msg;
-                if (pusername == username) {
-                    item.className = "text-left ownMessage";
-                }
-                else {
-                    item.className = "text-left otherMessage";
-                }
-                messages.appendChild(item);*/
                 anime({
                     targets: document.querySelectorAll(".ownMessage:last-child"),
                     translateX: [50, 0],
@@ -384,11 +440,6 @@
             }
         });
 
-        /*socket.on('typing', function(pusername) {
-            console.log(pusername + "is typing");
-            document.getElementById('typing').innerHTML = "is typing a message";
-        });*/
-
         socket.on('usercount', function (usercount) {
             document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
         });
@@ -403,8 +454,8 @@
                     str3 = "')";
                     rooms[i] = '<li class="roomListItem"><a href=' + str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
                 }
-
-                list.innerHTML = '<ul id="roomList">' + rooms + '</ul>';
+                
+                list.innerHTML = '<ul id="roomList">' + rooms.join("") + '</ul>';
             }
             catch
             {
@@ -413,11 +464,40 @@
 
         });
 
+        function chatApi(roomname)
+        {
+            var apiReq = new XMLHttpRequest();
+            var url ="/m/"+roomname;
+            var messageArr = [];
+            var userArr = [];
+            apiReq.open("GET", url, false);
+            apiReq.send(null);
+            console.log("ApiResponse");
+            console.log(apiReq.responseText);
+            var resArr = apiReq.responseText.split('","');
+            resArr[0] = resArr[0].replace('["', '');
+            resArr[resArr.length-1] = resArr[resArr.length-1].replace('"]', '');
+            for(i = resArr.length-1; i > 0; i = i-2)
+            {
+                username = resArr[i-1];
+                message = resArr[i];
+                str = username+": "+message;
+                if(username == readCookie("username"))
+                {
+                attachMessage("text-left ownMessage", str);
+                }
+                else
+                attachMessage("text-left otherMessage", str)
+            };
+        };
+
         function joinRoom(roomname) {
             socket.emit('joinRoom', roomname);
             console.log("Join Room " + roomname);
+            clearChat(roomname);
             document.cookie = "room=" + roomname;
-            attachMessage("sysMessage", "You joined ", roomname, "");
+            var str ="You joined "+roomname;
+            attachMessage("sysMessage", str);
             anime({
                 targets: document.getElementById('messages').lastElementChild,
                 translateY: [50, 0],
@@ -447,19 +527,40 @@
             var settings = document.getElementById('settingsMenu');
             if (settings.style.display == "none") {
                 settings.style.display = "block";
+                settings.scrollIntoView({behavior: 'smooth'})
             }
             else {
                 settings.style.display = "none";
             }
         }
 
-        function attachMessage(className, str1, str2, str3, str4) {
+        function toggleRoomOverlay() {
+            var settings = document.getElementById('roomMenu');
+            if (settings.style.display == "none") {
+                settings.style.display = "block";
+                settings.scrollIntoView({behavior: 'smooth'})
+            }
+            else {
+                settings.style.display = "none";
+            }
+        }
+
+        function attachMessage(pclassName, str) {
             var item = document.createElement('li');
-            item.textContent = str1 + str2 + str3 + str4;
+            item.textContent = str;
+            className = "attachMessage "+pclassName;
             item.className = className;
             messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
+            item.scrollIntoView({ behavior: 'smooth'});
+            //window.scrollTo(0, document.body.scrollHeight);
             displayRoomName();
+
+        }
+
+        function clearChat(room) {
+            document.querySelectorAll('.attachMessage').forEach(e => e.remove());
+            console.log("clearChat");
+            chatApi(room);
         }
     </script>
 </body>
