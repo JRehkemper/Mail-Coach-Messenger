@@ -369,13 +369,13 @@
                 if(roomname.length == 20) {
                     roomname = roomname + "_";
                 }
-                roomname = roomname.replace(" ", "_");
-                roomname = roomname.replace("ä","ae");
-                roomname = roomname.replace("Ä","Ae");
-                roomname = roomname.replace("ö","oe");
-                roomname = roomname.replace("Ö","Oe");
-                roomname = roomname.replace("ü","ue");
-                roomname = roomname.replace("Ü","Ue");
+                roomname = roomname.replace(/ /g, "_");
+                roomname = roomname.replace(/ä/g,"ae");
+                roomname = roomname.replace(/Ä/g,"Ae");
+                roomname = roomname.replace(/ö/g,"oe");
+                roomname = roomname.replace(/Ö/g,"Oe");
+                roomname = roomname.replace(/ü/g,"ue");
+                roomname = roomname.replace(/Ü/g,"Ue");
                 newRoomInputOverlay.value = '';
                 logging.checked = false;
                 password.value = '';
