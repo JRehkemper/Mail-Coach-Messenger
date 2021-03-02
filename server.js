@@ -122,7 +122,7 @@ io.on('connection', (socket) => {
   });
 
   //join Room
-  socket.on('joinRoom', (roomName) => {
+  socket.on('joinRoom', (roomName, username) => {
     var sql = "SELECT Password FROM Rooms WHERE Room = ?;";
     var val = [roomName];
     var password;
@@ -133,15 +133,36 @@ io.on('connection', (socket) => {
           var row = rows[key];
           password = row.Password;
         });
-      }      
-    });
-    if(password == null)
+      } 
+      if(password == null)
       {
         socket.join(roomName);
-        socket.in(roomName).emit('connection');
+        socket.emit("joinRoomSuccess", roomName);
+        socket.in(roomName).emit('connection', roomName, username);
         console.log("Room joined");
         joinRoomSQL(roomName);
       }
+      else 
+      {
+        socket.emit("joinRoomPasswordReq");
+        socket.on('joinRoomPasswordAns', function(ppassword) {
+          if (password == ppassword)
+          {
+            socket.join(roomName);
+            socket.emit("joinRoomSuccess", roomName);
+            socket.in(roomName).emit('connection', roomName, username);
+          }
+          else
+          {
+            socket.emit("joinRoomFailed");
+            console.log("Wrong Password for Room "+roomName);
+            //socket.emit("joinRoomPasswordReq");
+          }
+        })
+        
+      }     
+    });
+    
   });
 
   function executeSQL(sql, val, column) {
@@ -251,8 +272,5 @@ io.on('connection', (socket) => {
         return false;
       }
     });
-    
   };
-
-
 });

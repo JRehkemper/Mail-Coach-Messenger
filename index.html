@@ -370,6 +370,12 @@
                     roomname = roomname + "_";
                 }
                 roomname = roomname.replace(" ", "_");
+                roomname = roomname.replace("ä","ae");
+                roomname = roomname.replace("Ä","Ae");
+                roomname = roomname.replace("ö","oe");
+                roomname = roomname.replace("Ö","Oe");
+                roomname = roomname.replace("ü","ue");
+                roomname = roomname.replace("Ü","Ue");
                 newRoomInputOverlay.value = '';
                 logging.checked = false;
                 password.value = '';
@@ -390,8 +396,9 @@
 
         socket.on('connection', function (pusername, proomname) {
             displayRoomName();
+            console.log("connection Event");
             var roomname = readCookie("room");
-            if (roomname == proomname && pusername != null) {
+            if (roomname == proomname) {
                 var str = pusername + " joined the Chat";
                 attachMessage("sysMessage", str);
                 anime({
@@ -406,7 +413,7 @@
 
         socket.on('disconnected', function (pusername, proomname) {
             var roomname = readCookie("room");
-            if (roomname == proomname && pusername != null) {
+            if (roomname == proomname) {
                 var str = pusername + " left the Chat";
                 attachMessage("sysMessage", str);
                 anime({
@@ -466,7 +473,6 @@
                     str3 = "')";
                     rooms[i] = '<li class="roomListItem"><a href=' + str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
                 }
-                
                 list.innerHTML = '<ul id="roomList">' + rooms.join("") + '</ul>';
             }
             catch
@@ -504,7 +510,21 @@
         };
 
         function joinRoom(roomname) {
-            socket.emit('joinRoom', roomname);
+            var username = readCookie("username");
+            socket.emit('joinRoom', roomname, username);
+        };
+
+        socket.on('joinRoomPasswordReq', function() {
+            var password;
+            password = prompt("Enter Password (Optional)");
+            socket.emit('joinRoomPasswordAns', password);
+        })
+
+        socket.on('joinRoomFailed', function() {
+            alert("The Room has a Password.\nYou are not authorized to enter the Chat!");
+        })
+
+        socket.on('joinRoomSuccess', function(roomname) {
             console.log("Join Room " + roomname);
             clearChat(roomname);
             document.cookie = "room=" + roomname;
@@ -515,23 +535,9 @@
                 translateY: [50, 0],
                 opacity: [0, 1],
             });
-
-            /*var item = document.createElement('li');
-            item.textContent = "You joined "+ roomname;
-            item.className = "sysMessage";
-            messages.appendChild(item);
-            anime({
-                targets: document.getElementById('messages').lastElementChild,
-                translateY: [50, 0],
-                opacity: [0, 1],
-            });
-            window.scrollTo(0, document.body.scrollHeight);
-
-            displayRoomName();*/
-        };
+        })
 
         function displayRoomName() {
-
             document.getElementById('channelName').innerHTML = readCookie("room");
         }
 
@@ -564,9 +570,7 @@
             item.className = className;
             messages.appendChild(item);
             item.scrollIntoView({ behavior: 'smooth'});
-            //window.scrollTo(0, document.body.scrollHeight);
             displayRoomName();
-
         }
 
         function clearChat(room) {
@@ -576,5 +580,4 @@
         }
     </script>
 </body>
-
 </html>
