@@ -13,28 +13,53 @@ var username;
 var mysql = require('mysql');
 const { exec } = require('child_process');
 
+const bcrypt = require('bcrypt');
+
+function currentTimestamp()
+{
+  let varArr = [];
+  varArr.push(new Date().getFullYear());
+  varArr.push(new Date().getMonth());
+  varArr.push(new Date().getDate());
+  varArr.push(new Date().getHours());
+  varArr.push(new Date().getMinutes());
+  varArr.push(new Date().getSeconds());
+  for (i = 0; i < varArr.length; i++)
+  {
+    if (varArr[i] < 10)
+    {
+      varArr[i] = "0"+varArr[i];
+    }
+  }
+  let str = varArr[0] + "-" + varArr[1] + "-" + varArr[2] + " - " + varArr[3] + ":" + varArr[4] + ":" + varArr[5] + " - ";
+  return str;
+}
+
 var con = mysql.createConnection({
   host: "192.168.0.215",
   user: "dbuser",
   password: "chatroom.bigos21",
   database: "chatdb",
+  charset: 'utf8mb4',
   insecureAuth: true
 });
 
 con.connect(function (err) {
   if (err);
-  console.log("Connected to Database!");
+  console.log(currentTimestamp() + "INFO - Connected to Database!");
 });
 
 app.use(express.static(path.join(__dirname, '/public')));
+//app.use(express.static(path.join(__dirname, '/lib')));
+
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
-  console.log("recieved Get Request");
-  console.log(req.cookies['username']);
+  console.log(currentTimestamp() + "INFO - recieved Get Request");
+  console.log(currentTimestamp() + "INFO - "+req.cookies['username']);
   reqRoom = req.cookies['room'];
   username = req.cookies['username'];
-  console.log(reqRoom);
+  console.log(currentTimestamp() + "INFO - "+reqRoom);
   if (reqRoom == null) {
     reqRoom = "main";
   }
@@ -42,7 +67,7 @@ app.get('/', (req, res) => {
 
 app.get('/m/:room', function(req, res) {
   try {
-    var sql = "SELECT Message, User FROM chatdb.?? ORDER BY Timestamp1 DESC LIMIT 100;";
+    var sql = "SELECT Message, User FROM ?? ORDER BY Timestamp1 DESC LIMIT 100;";
     var val = [req.params.room+"Message"];
     var messageArr = [];
     var userArr = [];
@@ -50,7 +75,7 @@ app.get('/m/:room', function(req, res) {
     var counter = 0;
     //resArr.push(req.params.room);
     con.query(sql, val, function (err, rows, fields) {
-      if(err) {console.log("Api Error: "+err);}
+      if(err) {console.log(currentTimestamp() + "ERROR - Api Error: "+err);}
       else {
         Object.keys(rows).forEach(function(key) {
           var row = rows[key];
@@ -75,12 +100,12 @@ app.get('/m/:room', function(req, res) {
 });
 
 http.listen(3000, () => {
-  console.log('listening on *:3000');
+  console.log(currentTimestamp() + 'INFO - listening on *:3000');
 });
 
 io.on('connection', (socket) => {
   socket.join(reqRoom);
-  console.log('a user connected');
+  console.log(currentTimestamp() + 'INFO - a user connected');
   io.sockets.in(reqRoom).emit('connection', username, reqRoom);
 
   joinRoomSQL(reqRoom);
@@ -94,7 +119,7 @@ io.on('connection', (socket) => {
 
   //disconnect
   socket.on('disconnect', (socket) => {
-    console.log('a user left');
+    console.log(currentTimestamp() + 'INFO - a user left');
     io.sockets.in(reqRoom).emit('disconnected', username, reqRoom);
     usercount--;
     io.sockets.in(reqRoom).emit('usercount', usercount);
@@ -107,18 +132,36 @@ io.on('connection', (socket) => {
 
     //chat Message
     io.sockets.in(proomname).emit('chat message', msg, username, proomname);
-    console.log('chat message: ' + proomname + " " + msg + " ");
-    MesseageSQL(username, msg, proomname);
+    console.log(currentTimestamp() + 'INFO - chat message: ' + proomname + " " + msg + " ");
+    if(msg.toLowerCase().includes("delete") || msg.toLowerCase().includes("remove"))
+    {
+
+    }
+    else {
+      MesseageSQL(username, msg, proomname);
+    }
 
   });
 
-  socket.on('newRoomCreate', (roomName, logging, password) => {
+  socket.on('newRoomCreate', (roomName, logging, ppassword) => {
     socket.leave("main");
     socket.join(roomName);
     socket.in(roomName).emit('connection');
-    console.log("New Room created " + roomName);
-    joinRoomSQL(roomName, logging, password);
-    roomSet();
+    console.log(currentTimestamp() + "INFO - New Room created " + roomName);
+    if (roomName.toLowerCase().includes("delete") || roomName.toLowerCase().includes("remove"))
+    {
+      console.log(currentTimestamp() + "WARNING - Injection detected");
+    }
+    else
+    {
+      bcrypt.hash(ppassword, 5, (err, hash) => {
+        if(err) {
+          console.log(currentTimestamp() + "ERROR - "+err);
+        }
+        joinRoomSQL(roomName, logging, hash);
+        roomSet();
+      })
+    }
   });
 
   //join Room
@@ -126,43 +169,53 @@ io.on('connection', (socket) => {
     var sql = "SELECT Password FROM Rooms WHERE Room = ?;";
     var val = [roomName];
     var password;
-    con.query(sql, val, function (err, rows, fields) {
-      if(err) {console.log(err);}
-      else {
-        Object.keys(rows).forEach(function(key) {
-          var row = rows[key];
-          password = row.Password;
-        });
-      } 
-      if(password == null)
-      {
-        socket.join(roomName);
-        socket.emit("joinRoomSuccess", roomName);
-        socket.in(roomName).emit('connection', roomName, username);
-        console.log("Room joined");
-        joinRoomSQL(roomName);
-      }
-      else 
-      {
-        socket.emit("joinRoomPasswordReq");
-        socket.on('joinRoomPasswordAns', function(ppassword) {
-          if (password == ppassword)
-          {
-            socket.join(roomName);
-            socket.emit("joinRoomSuccess", roomName);
-            socket.in(roomName).emit('connection', roomName, username);
-          }
-          else
-          {
-            socket.emit("joinRoomFailed");
-            console.log("Wrong Password for Room "+roomName);
-            //socket.emit("joinRoomPasswordReq");
-          }
-        })
-        
-      }     
-    });
-    
+    console.log(currentTimestamp()+"DEBUG - Recieved Joinroom from "+username);
+    if (roomName.toLowerCase().includes("remove") || roomName.toLowerCase().includes("remove"))
+    {
+      console.log(currentTimestamp() + "WARNING - Injection detected");
+    }
+    else
+    {
+      con.query(sql, val, function (err, rows, fields) {
+        if(err) {console.log(currentTimestamp() + "ERROR - "+err);}
+        else {
+          Object.keys(rows).forEach(function(key) {
+            var row = rows[key];
+            password = row.Password;
+          });
+        } 
+        if(password == null)
+        {
+          socket.join(roomName);
+          socket.emit("joinRoomSuccess", roomName);
+          socket.in(roomName).emit('connection', roomName, username);
+          console.log(currentTimestamp() + "INFO - Room joined");
+          joinRoomSQL(roomName);
+        }
+        else 
+        {
+          socket.emit("joinRoomPasswordReq");
+          console.log(currentTimestamp()+"DEBUG - Password Requested");
+          socket.on('joinRoomPasswordAns', function(ppassword) {
+            bcrypt.compare(ppassword, password, function(err, result) {
+              if (err) { console.log(currentTimestamp() + "ERROR - "+err) }
+              if (result == true)
+              {
+                socket.join(roomName);
+                socket.emit("joinRoomSuccess", roomName);
+                socket.in(roomName).emit('connection', roomName, username);
+                console.log(currentTimestamp() + "INFO - Room joined Successful");
+              }
+              else if (result == false)
+              {
+                socket.emit("joinRoomFailed");
+                console.log(currentTimestamp() + "WARNING - Wrong Password for Room "+roomName);
+              }
+            })
+          })
+        }    
+      });
+    }
   });
 
   function executeSQL(sql, val, column) {
@@ -171,29 +224,34 @@ io.on('connection', (socket) => {
       {
         if (err.code != "ER_DUP_ENTRY")
         {
-          console.log("execute sql error:", err);
+          console.log(currentTimestamp() + "ERROR - execute sql error:", err);
         }
       }
+      //console.log("DEBUG - ExecuteSQL SQL: "+sql);
+      //console.log("DEBUG - ExecuteSQL VAL: "+val);
     });
   };
 
   function joinRoomSQL(room, logging, password) {
-    try {
-      var sql = "INSERT INTO chatdb.Rooms (Room, Logging, Password) VALUES (?,?,?);";
-      if(logging == null)
-      {
-        logging = 1;
+    if(room != null)
+    {
+      try {
+        var sql = "INSERT INTO chatdb.Rooms (Room, Logging, Password) VALUES (?,?,?);";
+        if(logging == null)
+        {
+          logging = 1;
+        }
+        var val = [room, logging, password];
+        executeSQL(sql, val);
       }
-      var val = [room, logging, password];
-      executeSQL(sql, val);
-    }
-    catch {
-      //nothing
-    }
-    if(logging == true) {
-      var sql = "CREATE TABLE IF NOT EXISTS chatdb.?? (ID int NOT NULL auto_increment, Timestamp1 timestamp DEFAULT CURRENT_TIMESTAMP,User varchar(256) NOT NULL , Message varchar(1024) NOT NULL, PRIMARY KEY (ID))";
-      var val = [room + "Message"];
-      executeSQL(sql, val);
+      catch {
+        //nothing
+      }
+      if(logging == true) {
+        var sql = "CREATE TABLE IF NOT EXISTS chatdb.?? (ID int NOT NULL auto_increment, Timestamp1 timestamp DEFAULT CURRENT_TIMESTAMP,User varchar(256) NOT NULL , Message varchar(1024) NOT NULL, PRIMARY KEY (ID)) CHARACTER SET=utf8mb4 COLLATE utf8mb4_unicode_ci;";
+        var val = [room + "Message"];
+        executeSQL(sql, val);
+      }
     }
   };
 
@@ -201,27 +259,26 @@ io.on('connection', (socket) => {
     var sql = "SELECT Logging from Rooms WHERE Room = ?;";
     var val = [room];
     var returnValue;
+    //console.log("DEBUG - Message for Room "+room);
     con.query(sql, val, function (err, rows) {
       if(err)
       {
-        console.log("execute sql error:", err);
+        console.log(currentTimestamp() + "ERROR - execute sql error:", err);
       };
-      console.log("BooleanSQL Result:");
-      console.log(rows);
 
       Object.keys(rows).forEach(function(key) {
         var row = rows[key];
-        console.log("Row.result "+row.Logging);
+        console.log(currentTimestamp() + "DEBUG - Row.result "+row.Logging);
         returnValue = row.Logging;
       });
+      if(returnValue == 1)
+      {
+        //console.log("DEBUG - Logging True");
+        var sql = "INSERT INTO ?? (User, Message) VALUES (?, ?);";
+        var val = [room+"Message", user, message];
+        executeSQL(sql, val);
+      };
     });
-
-    if(returnValue == 1)
-    {
-      var sql = "INSERT INTO ?? (User, Message) VALUES (?, ?);";
-      var val = [room+"Message", user, message];
-      executeSQL(sql, val);
-    };
   };
 
   function roomSet() {
@@ -250,27 +307,27 @@ io.on('connection', (socket) => {
     con.query(sql, val, function (err, rows) {
       if(err)
       {
-        console.log("execute sql error:", err);
+        console.log(currentTimestamp() + "ERROR - execute sql error:", err);
       };
-      console.log("BooleanSQL Result:");
-      console.log(rows);
 
       Object.keys(rows).forEach(function(key) {
         var row = rows[key];
-        console.log("Row.result "+row.result);
+        console.log(currentTimestamp() + "INFO - Row.result "+row.result);
         result.push(row.result);
         returnValue = row.result;
       });
       if (returnValue == 1)
       {
-        console.log("Boolean True");
+        console.log(currentTimestamp() + "INFO - Boolean True");
         return true;
       }
       else
       {
-        console.log("Boolean False");
+        console.log(currentTimestamp() + "INFO - Boolean False");
         return false;
       }
     });
   };
+
+
 });

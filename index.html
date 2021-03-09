@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" href="/css/style.css">
     <link rel="shortcut icon" type="image/x-icon" href="/img/MailCoach.png">
+	  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/emoji-picker/lib/css/emoji.css" rel="stylesheet">
 
     <!-- Bootstrap css-->
     <link type="text/css" rel="stylesheet"
@@ -33,17 +35,12 @@
         function enterUsername() {
             username = prompt('Enter a Username:', '');
             document.cookie = "username=" + username;
-            console.log(username);
         }
         var username = readCookie("username");
-        //if()
         while (username == "" || username == null) {
-            //username = prompt('Enter a Username:', '');
             enterUsername();
             location.reload();
         }
-        //document.cookie = "username="+username;
-        //console.log(username);
         var loading = true;
 
         var roomname = readCookie("room");
@@ -167,11 +164,12 @@
                     </div>
                     <div class="col-12 col-lg-10 col-xl-8 mx-auto ">
                         <form id="form" action="">
-                            <input class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off"
-                                autofocus /><button class="col-3 col-lg-3 col-xl-2 text-center">Send</button>
+                            <input  data-emojiable="true" data-emoji-input="unicode" class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off"
+                                autofocus /><button class="col-3 col-lg-3 col-xl-2 text-center" id="chatSendButton">Send</button> <!--data-emojiable="true"-->
                         </form>
                     </div>
                 </div>
+                
                 <!-- Chatinput-Filed -->
                 <!--<div class="row ChatInput" >
                     <div class="col-12 col-lg-10 col-xl-10 mx-auto formBackground" style="height: 10vh !important;">
@@ -241,6 +239,56 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
         integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q=="
         crossorigin="anonymous"></script>
+
+    <script src="/emoji-picker/lib/js/config.js"></script>
+    <script src="/emoji-picker/lib/js/util.js"></script>
+    <script src="/emoji-picker/lib/js/jquery.emojiarea.js"></script>
+    <script src="/emoji-picker/lib/js/emoji-picker.js"></script>
+    <script>
+        $(function() {
+            // Initializes and creates emoji set from sprite sheet
+            window.emojiPicker = new EmojiPicker({
+                emojiable_selector: '[data-emojiable=true]',
+                assetsPath: '/emoji-picker/lib/img/',
+                popupButtonClasses: 'fa fa-smile-o'
+            });
+            // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+            // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+            // It can be called as many times as necessary; previously converted input fields will not be converted again
+            window.emojiPicker.discover();
+
+            var textarea = document.querySelectorAll(".enterTriggerClass");
+            var sendButton = document.querySelectorAll("#chatSendButton");
+            var formField = document.querySelectorAll("#form");
+            var inputField = document.querySelectorAll('#input');
+            var shift = false;
+            textarea[0].addEventListener("keydown", function(event) {
+                console.log(event.keyCode);
+                if (event.keyCode === 13 && shift == false)
+                {
+                    formField[0].focus();
+                    sendButton[0].focus();
+                    sendButton[0].click();
+                    event.preventDefault();
+                    textarea[0].innerText = '';
+                    inputField[0].innerText = '';
+                }
+                else if (event.keyCode === 13 && shift == true) {
+                    //enter new line
+                }
+
+                if (event.keyCode === 16)
+                {
+                    shift = true;
+                }
+            });
+            textarea[0].addEventListener("keyup", function(event) {
+                if (event.keyCode === 16) {
+                    shift = false;
+                }
+            })
+        });
+    </script>
 
     <script>
         var audio = new Audio('sound/messageSound.mp3');
@@ -316,8 +364,12 @@
                 username = readCookie("username");
                 roomname = readCookie("room");
                 socket.emit('chat message', input.value, username, roomname);
-                console.log(input.value + "in Room " + roomname);
+                console.log(input.value + " in Room " + roomname);
                 input.value = '';
+                var textarea = document.querySelectorAll(".enterTriggerClass");
+                var inputField = document.querySelectorAll('#input');
+                textarea[0].innerText = '';
+                inputField[0].innerText = '';
             }
 
         });
@@ -490,8 +542,6 @@
             var userArr = [];
             apiReq.open("GET", url, false);
             apiReq.send(null);
-            console.log("ApiResponse");
-            console.log(apiReq.responseText);
             var resArr = apiReq.responseText.split('","');
             resArr[0] = resArr[0].replace('["', '');
             resArr[resArr.length-1] = resArr[resArr.length-1].replace('"]', '');
@@ -518,14 +568,16 @@
             var password;
             password = prompt("Enter Password (Optional)");
             socket.emit('joinRoomPasswordAns', password);
+            console.log("joinRoomPasswordReq Event");
         })
 
         socket.on('joinRoomFailed', function() {
+            console.log("joinRoomFailed Event");
             alert("The Room has a Password.\nYou are not authorized to enter the Chat!");
         })
 
         socket.on('joinRoomSuccess', function(roomname) {
-            console.log("Join Room " + roomname);
+            console.log("joinRoomSuccess Event");
             clearChat(roomname);
             document.cookie = "room=" + roomname;
             var str ="You joined "+roomname;
@@ -575,7 +627,6 @@
 
         function clearChat(room) {
             document.querySelectorAll('.attachMessage').forEach(e => e.remove());
-            console.log("clearChat");
             chatApi(room);
         }
     </script>
