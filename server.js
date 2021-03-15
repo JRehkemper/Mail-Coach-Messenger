@@ -169,7 +169,7 @@ io.on('connection', (socket) => {
     var sql = "SELECT Password FROM Rooms WHERE Room = ?;";
     var val = [roomName];
     var password;
-    console.log(currentTimestamp()+"DEBUG - Recieved Joinroom from "+username);
+    var counter = 0;
     if (roomName.toLowerCase().includes("remove") || roomName.toLowerCase().includes("remove"))
     {
       console.log(currentTimestamp() + "WARNING - Injection detected");
@@ -195,7 +195,6 @@ io.on('connection', (socket) => {
         else 
         {
           socket.emit("joinRoomPasswordReq");
-          console.log(currentTimestamp()+"DEBUG - Password Requested");
           socket.on('joinRoomPasswordAns', function(ppassword) {
             bcrypt.compare(ppassword, password, function(err, result) {
               if (err) { console.log(currentTimestamp() + "ERROR - "+err) }
@@ -208,8 +207,12 @@ io.on('connection', (socket) => {
               }
               else if (result == false)
               {
-                socket.emit("joinRoomFailed");
-                console.log(currentTimestamp() + "WARNING - Wrong Password for Room "+roomName);
+                if (counter == 0)
+                {
+                  socket.emit("joinRoomFailed");
+                  counter ++;
+                  console.log(currentTimestamp() + "WARNING - Wrong Password for Room "+roomName);
+                }
               }
             })
           })
@@ -282,16 +285,18 @@ io.on('connection', (socket) => {
   };
 
   function roomSet() {
-    sql = "SELECT Room FROM chatdb.Rooms;";
+    sql = "SELECT Room, Password FROM chatdb.Rooms;";
     var roomArr = [];
+    var passArr = [];
     con.query(sql, function (err, rows, fields) {
       Object.keys(rows).forEach(function(key) {
         var row = rows[key];
         //console.log("Object.key "+row.Room);
         roomArr.push(row.Room);
+        passArr.push(row.Password)
       });
       //console.log("roomSet " + roomArr[0]);
-      io.emit('roomSet', roomArr);
+      io.emit('roomSet', roomArr, passArr);
     });
   };
 

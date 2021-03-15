@@ -94,27 +94,18 @@
             </div>
             <!-- Middle Space -->
 
-            <!-- NavButtons -->
-            <!--<div class="navButtonsBar col-10 sticky-top p-4 mx-auto">
-                <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
-                    <img src="/img/settings.svg"
-                        style="width: 2em; height: 2em; float: right; background-color: white; border-radius: 50%; padding:2px;">
-                </div>
-            </div>-->
             <!-- Main Area -->
             <div class="col-lg-10 col-xl-10 mx-auto HeaderDiv p-3">
-
-
                 <div class="col-12 Header pt-3 pb-1 mx-auto">
-                    <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
-                        <img src="/img/settings.svg"
+                    <div class="settingIcon" class="mx-left" onclick="toggleSettings()">
+                        <img src="/img/settings.svg" 
                             style="width: 2em; height: 2em; float: right; background-color: white; border-radius: 50%; padding:2px;">
                     </div>
                     <div class="row">
-                        <div class="col-4 align-items-center">
-                            <img src="img/MailCoach2.png" style="width: auto; max-width: 100%; height: 150px; float: right; object-fit: cover;">
+                        <div class="col-0 d-none col-sm-0 d-sm-none col-md-4 d-md-block col-lg-4 d-lg-block col-xl-4 align-items-center">
+                            <img src="img/MailCoach2.png" style="width: auto; max-width: 100%; height:auto; max-height: 150px; float: right; object-fit: cover;">
                         </div>
-                        <div class="col-4">
+                        <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
                             <h1 class="text-center HeaderM">Mail Coach</h1>
                             <p class="text-center HeaderM">An instant Messages Service for your Browser</p>
                             
@@ -124,20 +115,18 @@
                         </div>
                         <div class="col-4"></div>
                     </div>
-                    
-
                 </div>
 
 
                 <!-- Channelname-->
-                <div class="Channel pt-1 mt-1">
-                    <h5 id="channelName" class="text-center p-1 ChannelM">Main Channel - Everybody can read and write
+                <div class="Channel mt-1">
+                    <h5 id="channelName" class="text-center pt-1 ChannelM">Main Channel - Everybody can read and write
                     </h5>
-                    <p class="text-center p-1 ChannelM" id="usercountId">Users</p>
+                    <p class="text-center pb-1 ChannelM" id="usercountId">Users</p>
                 </div>
-                <div class="row" style="height: 63%;">
+                <div class="row" style="height: 60%;">
                     <!-- New Room -->
-                    <div class="col-3 mx-auto" style="overflow-x: hidden; height: 100%;">
+                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 mx-auto" style="overflow-x: hidden; height: 59vh;">
                         <form id="newRoomForm" action="">
                             <!---<input style="width:100% !important" id="newRoomInput">
                             <button style="width: 100% !important;" class="text-center p-1">Join Room</button>-->
@@ -148,8 +137,8 @@
                         </ul>
                     </div>
                     <!-- Chatmessages-->
-                    <div class="Chatarea col-9 mx-auto" style="height: 100%;">
-                        <div class="col-lg-12 col-xl-12 mx-auto pt-3 ChatMessages" style="height: 100%;">
+                    <div class="Chatarea col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 mx-auto" style="height: 59vh">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mx-auto ChatMessages" style="height: 100%;">
                             <ul id="messages" style="overflow-y: scroll; overflow-x: hidden; height: 100% !important">
 
                             </ul>
@@ -159,31 +148,13 @@
                 </div>
                 <!-- Chatinput-Filed -->
                 <div class="col-12 mx-auto formBackground p-1">
-                    <div class="col-12 col-lg-10 col-xl-8 ">
-                        <p id="typing"></p>
-                    </div>
-                    <div class="col-12 col-lg-10 col-xl-8 mx-auto ">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 mx-auto p-2">
                         <form id="form" action="">
-                            <input  data-emojiable="true" data-emoji-input="unicode" class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off"
-                                autofocus /><button class="col-3 col-lg-3 col-xl-2 text-center" id="chatSendButton">Send</button> <!--data-emojiable="true"-->
+                            <input  data-emojiable="true" data-emoji-input="unicode" class="col-9 col-sm-9 col-md-9 col-lg-10 col-xl-10 mx-auto" id="input" autocomplete="off"
+                                autofocus /><button class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 text-center mx-auto" id="chatSendButton">Send</button> <!--data-emojiable="true"-->
                         </form>
                     </div>
                 </div>
-                
-                <!-- Chatinput-Filed -->
-                <!--<div class="row ChatInput" >
-                    <div class="col-12 col-lg-10 col-xl-10 mx-auto formBackground" style="height: 10vh !important;">
-                        <div class="col-12 col-lg-10 col-xl-8">
-                            <p id="typing"></p>
-                        </div>
-                        <div class="col-12 col-lg-10 col-xl-8 mx-auto ">
-                            <form id="form" action="">
-                                <input class="col-9 col-lg-9 col-xl-10" id="input" autocomplete="off"
-                                    autofocus /><button class="col-3 col-lg-3 col-xl-2 text-center">Send</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>-->
             </div>
             <!-- Right Space -->
             <div class="col-1 d-none d-sm-none d-md-none">
@@ -195,9 +166,9 @@
     <div id="settingsMenu" class="container-fluid"
         style="height: 100% !important; background: rgba(0,0,0,0.7); position: absolute; top:0; bottom:0; left:0; right: 0; z-index: 2000; display: none;">
 
-        <div class="text-center col-6 mx-auto p-4"
-            style="background: #fff; width: 50%; height: 50%; margin-top: 10em; border-radius: 2em;">
-            <div id="settingIcon" class="mx-left" onclick="toggleSettings()">
+        <div class="text-center col-12 col-sm-10 col-md-10 col-lg-6 col-xl-6 mx-auto p-4"
+            style="background: #fff; height: 50%; margin-top: 10em; border-radius: 2em;">
+            <div class="settingIcon" class="mx-left" onclick="toggleSettings()">
                 <img src="/img/cancel.svg" style="width: 2em; height: 2em; float: right;">
             </div>
             <h3 class="text-center p-4">Settings</h3>
@@ -208,12 +179,12 @@
     <div id="roomMenu" class="container-fluid"
         style="height: 100% !important; background: rgba(0,0,0,0.7); position: absolute; top:0; bottom:0; left:0; right: 0; z-index: 2000; display: none;">
 
-        <div class="text-center col-6 mx-auto p-4"
-            style="background: #fff; width: 50%; height: 50%; margin-top: 10em; border-radius: 2em;">
-            <div id="settingIcon" class="mx-left" onclick="toggleRoomOverlay()">
+        <div class="text-center col-12 col-sm-10 col-md-10 col-lg-6 col-xl-6 mx-auto p-4"
+            style="background: #fff; height: 50%; margin-top: 10em; border-radius: 2em;">
+            <div class="settingIcon" class="mx-left" onclick="toggleRoomOverlay()">
                 <img src="/img/cancel.svg" style="width: 2em; height: 2em; float: right;">
             </div>
-            <div class="text-center mx-auto" style="width: 60%;">
+            <div class="text-center mx-auto col-10 col-sm-10 col-md-10 col-lg-8 col-xl-8">
                 <h3 class="text-center p-4">Create New Room</h3>
                 <form id="newRoomFormOverlay" action="" >
                     <input style="width:100% !important; margin-bottom: 1em;" id="newRoomInputOverlay" placeholder="Roomname">
@@ -376,26 +347,6 @@
 
         document.getElementById("newRoomForm").addEventListener('submit', function (e) {
             e.preventDefault();
-            /*if (newRoomInput.value) {
-                socket.emit('newRoomCreate', newRoomInput.value);
-                console.log("roomname" + newRoomInput.value);
-                roomname = newRoomInput.value;
-                if (roomname.length == 20) {
-                    roomname = roomname + " ";
-                }
-                newRoomInput.value = '';
-                document.cookie = "room=" + roomname;
-                var str = "You joined "+roomname;
-                attachMessage("sysMessage", str);
-                anime({
-                    targets: document.getElementById('messages').lastElementChild,
-                    translateY: [50, 0],
-                    opacity: [0, 1],
-                });
-                //window.scrollTo(0, document.body.scrollHeight);
-
-                displayRoomName();
-            }*/
         })
 
         document.getElementById("newRoomFormOverlay").addEventListener('submit', function (e) {
@@ -515,15 +466,25 @@
             document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
         });
 
-        socket.on('roomSet', function (roomSet) {
+        socket.on('roomSet', function (roomSet, passSet) {
             var list = document.getElementById('roomList');
             var rooms = [];
+            var iconLock = "";
             try {
                 for (i = 0; i < roomSet.length; i += 1) {
+                    
+                    if (passSet[i] == null)
+                    {
+                        iconLock = '<img src=img/unlock.svg style="background-color:white; border-radius:50%; margin-right:0.2em; padding:1px">';
+                    }
+                    else
+                    {
+                        iconLock = '<img src=img/lock.svg style="background-color:white; border-radius:50%; margin-right:0.2em; padding:1px">';
+                    }
                     str1 = '"javascript:joinRoom(';
                     str2 = "'";
                     str3 = "')";
-                    rooms[i] = '<li class="roomListItem"><a href=' + str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
+                    rooms[i] = '<li class="roomListItem">' +iconLock+ '<a href=' + str1 + str2 + roomSet[i] + str3 + '">' + roomSet[i] + '</a></li>';
                 }
                 list.innerHTML = '<ul id="roomList">' + rooms.join("") + '</ul>';
             }
@@ -531,7 +492,6 @@
             {
 
             }
-
         });
 
         function chatApi(roomname)
