@@ -399,6 +399,7 @@
 
         socket.on('connection', function (pusername, proomname) {
             displayRoomName();
+            console.log(pusername + " "+ proomname);
             console.log("connection Event");
             var roomname = readCookie("room");
             if (roomname == proomname) {
@@ -462,8 +463,12 @@
             }
         });
 
-        socket.on('usercount', function (usercount) {
-            document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
+        socket.on('usercount', function (usercount, room) {
+            console.log("usercount "+usercount + " "+ room);
+            if (room == readCookie("room"))
+            {
+                document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;
+            }
         });
 
         socket.on('roomSet', function (roomSet, passSet) {
@@ -521,7 +526,7 @@
 
         function joinRoom(roomname) {
             var username = readCookie("username");
-            socket.emit('joinRoom', roomname, username);
+            socket.emit('joinRoom', roomname, username, readCookie("room"));
         };
 
         socket.on('joinRoomPasswordReq', function() {

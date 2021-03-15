@@ -50,8 +50,6 @@ con.connect(function (err) {
 });
 
 app.use(express.static(path.join(__dirname, '/public')));
-//app.use(express.static(path.join(__dirname, '/lib')));
-
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -73,17 +71,13 @@ app.get('/m/:room', function(req, res) {
     var userArr = [];
     var resArr = [];
     var counter = 0;
-    //resArr.push(req.params.room);
     con.query(sql, val, function (err, rows, fields) {
       if(err) {console.log(currentTimestamp() + "ERROR - Api Error: "+err);}
       else {
         Object.keys(rows).forEach(function(key) {
           var row = rows[key];
-          //console.log("Object.key "+row.Room);
           messageArr.push(row.Message);
           userArr.push(row.User);
-          //var str = row.User+": "+row.Message;
-          //resArr.push(str);
           
           resArr.push(row.User);
           resArr.push(row.Message);
@@ -105,8 +99,11 @@ http.listen(3000, () => {
 
 io.on('connection', (socket) => {
   socket.join(reqRoom);
-  console.log(currentTimestamp() + 'INFO - a user connected');
-  io.sockets.in(reqRoom).emit('connection', username, reqRoom);
+  console.log(currentTimestamp() + 'INFO - '+username+' connected ' + socket.id);
+  io.sockets.emit('connection', username, reqRoom);
+  var sql = "INSERT INTO User (Name, SocketID, Room) VALUES (?,?,?);"  ;
+  var val = [username, socket.id, reqRoom];
+  executeSQL(sql, val);
 
   joinRoomSQL(reqRoom);
 
@@ -114,17 +111,20 @@ io.on('connection', (socket) => {
   roomSet();
 
   //usercount
-  usercount++;
-  io.sockets.in(reqRoom).emit('usercount', usercount);
+  //usercount++;
+  //io.sockets.in(reqRoom).emit('usercount', usercount);
 
   //disconnect
-  socket.on('disconnect', (socket) => {
-    console.log(currentTimestamp() + 'INFO - a user left');
+  socket.on('disconnect', (reason) => {
+    console.log(currentTimestamp() + 'INFO - a user left ' +socket.id + ' ' +reason);
     io.sockets.in(reqRoom).emit('disconnected', username, reqRoom);
-    usercount--;
-    io.sockets.in(reqRoom).emit('usercount', usercount);
+    var sql = "DELETE FROM User WHERE SocketID = ?;";
+    var val = [socket.id]
+    executeSQL(sql,val);
+    //usercount--;
+    //io.sockets.in(reqRoom).emit('usercount', usercount);
+    roomSet();
   });
-
 
   socket.on('chat message', (msg, username, proomname) => {
     //roomlist
@@ -132,7 +132,7 @@ io.on('connection', (socket) => {
 
     //chat Message
     io.sockets.in(proomname).emit('chat message', msg, username, proomname);
-    console.log(currentTimestamp() + 'INFO - chat message: ' + proomname + " " + msg + " ");
+    console.log(currentTimestamp() + 'INFO - chat message: ' + proomname + " " + msg + " " + socket.id);
     if(msg.toLowerCase().includes("delete") || msg.toLowerCase().includes("remove"))
     {
 
@@ -165,11 +165,12 @@ io.on('connection', (socket) => {
   });
 
   //join Room
-  socket.on('joinRoom', (roomName, username) => {
-    var sql = "SELECT Password FROM Rooms WHERE Room = ?;";
+  socket.on('joinRoom', (roomName, username, oldRoom) => {
+    var sql = "SELECT Password, Users FROM Rooms WHERE Room = ?;";
     var val = [roomName];
     var password;
     var counter = 0;
+    var newUsercount = 0;
     if (roomName.toLowerCase().includes("remove") || roomName.toLowerCase().includes("remove"))
     {
       console.log(currentTimestamp() + "WARNING - Injection detected");
@@ -182,15 +183,21 @@ io.on('connection', (socket) => {
           Object.keys(rows).forEach(function(key) {
             var row = rows[key];
             password = row.Password;
+            newUsercount = row.Users;
           });
         } 
         if(password == null)
         {
+          socket.in(oldRoom).emit('disconnected', username, oldRoom);
           socket.join(roomName);
           socket.emit("joinRoomSuccess", roomName);
-          socket.in(roomName).emit('connection', roomName, username);
+          socket.in(roomName).emit('connection', username, roomName);
           console.log(currentTimestamp() + "INFO - Room joined");
           joinRoomSQL(roomName);
+          var sql = "UPDATE User SET Room = ? WHERE SocketID = ?;";
+          var val = [roomName, socket.id];
+          executeSQL(sql,val);
+          roomSet()
         }
         else 
         {
@@ -204,6 +211,10 @@ io.on('connection', (socket) => {
                 socket.emit("joinRoomSuccess", roomName);
                 socket.in(roomName).emit('connection', roomName, username);
                 console.log(currentTimestamp() + "INFO - Room joined Successful");
+                var sql = "UPDATE User SET Room = ? WHERE SocketID = ?;";
+                var val = [roomName, socket.id];
+                executeSQL(sql,val);
+                roomSet();
               }
               else if (result == false)
               {
@@ -220,6 +231,29 @@ io.on('connection', (socket) => {
       });
     }
   });
+
+  function userCountSQL(room)
+  {
+    var sql = "SELECT Count(Room) AS result FROM User Where Room = ?;";
+    var val = [room];
+    var usercount;
+    con.query(sql, val, function (err, rows) {
+      if(err)
+      {
+        
+      }
+      Object.keys(rows).forEach(function(key) {
+        var row = rows[key];
+        //console.log(currentTimestamp() + "DEBUG - Row.result "+row.result);
+        usercount = row.result;
+      });
+      //console.log("DEBUG - ExecuteSQL SQL: "+sql);
+      //console.log("DEBUG - ExecuteSQL VAL: "+val);
+      //console.log(currentTimestamp()+"UsercountSQL "+room);
+      io.emit('usercount', usercount, room);
+    });
+    
+  };
 
   function executeSQL(sql, val, column) {
     con.query(sql, val, function (err, results) {
@@ -297,6 +331,12 @@ io.on('connection', (socket) => {
       });
       //console.log("roomSet " + roomArr[0]);
       io.emit('roomSet', roomArr, passArr);
+      for (var i = 0; i < roomArr.length; i++)
+      {
+        //console.log(roomArr[i]);
+        userCountSQL(roomArr[i]);
+        //console.log(currentTimestamp()+"Usercount für "+ roomArr[i]);
+      }
     });
   };
 
