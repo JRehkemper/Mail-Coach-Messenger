@@ -464,7 +464,7 @@
         });
 
         socket.on('usercount', function (usercount, room) {
-            console.log("usercount "+usercount + " "+ room);
+            //console.log("usercount "+usercount + " "+ room);
             if (room == readCookie("room"))
             {
                 document.getElementById('usercountId').innerHTML = "Connected Users: " + usercount;

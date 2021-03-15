@@ -1,8 +1,2 @@
 Mögliche Erweiterungen
 
-- smileys
-- Mehrere Chatrooms
-- Eigene Chatrooms erstellen
-- Passwort schutz
-- Chatverlauf
-- Chat exportieren als csv oder ähnlichem
