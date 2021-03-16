@@ -384,13 +384,14 @@
                 password.value = '';
                 document.cookie = "room="+roomname;
                 socket.emit('newRoomCreate', roomname, logState, passwordValue);
-                var str = "You joind "+roomname;
+                /*var str = "You joind "+roomname;
                 attachMessage("sysMessage", str);
                 anime({
                     targets: document.getElementById('messages').lastElementChild,
                     translateY: [50, 0],
                     opacity: [0, 1],
-                });
+                });*/
+                joinRoom(roomname);
                 displayRoomName();
                 toggleRoomOverlay();
             };
