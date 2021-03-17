@@ -52,7 +52,7 @@ function readCreds()
   {
     var str = "";
     str = fs.readFileSync('database.conf', 'utf-8');
-    console.log(str);
+    //console.log(str);
     creds = str.split("\n");
     
   }
@@ -65,9 +65,9 @@ var con = mysql.createConnection({
   password: creds[2],
   database: creds[3],
   charset: 'utf8mb4',
-  insecureAuth: true
+  insecureAuth: false
 });
-console.log(con);
+//console.log(con);
 
 con.connect(function (err) {
   if (err);
