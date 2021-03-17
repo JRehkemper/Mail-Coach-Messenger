@@ -9,11 +9,16 @@ const { disconnect } = require('process');
 var usercount = 0;
 var reqRoom;
 var username;
+const lineReader = require('line-reader');
 
 var mysql = require('mysql');
 const { exec } = require('child_process');
 
 const bcrypt = require('bcrypt');
+const { SSL_OP_EPHEMERAL_RSA } = require('constants');
+const fs = require('fs');
+
+var creds = [];
 
 function currentTimestamp()
 {
@@ -35,14 +40,34 @@ function currentTimestamp()
   return str;
 }
 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
+function readCreds()
+  {
+    var str = "";
+    str = fs.readFileSync('database.conf', 'utf-8');
+    console.log(str);
+    creds = str.split("\n");
+    
+  }
+
+readCreds();
 var con = mysql.createConnection({
-  host: "192.168.0.215",
-  user: "dbuser",
-  password: "chatroom.bigos21",
-  database: "chatdb",
+
+  host: creds[0],
+  user: creds[1],
+  password: creds[2],
+  database: creds[3],
   charset: 'utf8mb4',
   insecureAuth: true
 });
+console.log(con);
 
 con.connect(function (err) {
   if (err);

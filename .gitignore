@@ -1,0 +1,5 @@
+start.sh
+output.log
+error.log
+database.conf
+chatlog.log
