@@ -16,9 +16,16 @@ Mail Coach is an Open Source Messanger based on Socket.IO and Node JS. You can r
 * MySQL Server (on the same host or network)
 
 ## Installation
-* Update your System
-* Install NodeJS/NPM
+* Update your System(`apt update; apt upgrade -y`)
+* Install NodeJS(`apt install nodejs`) 
+* Install NPM(`apt install npm`) 
+* Install PM2(`npm install pm2 -g`)
 * Clone Git Repository
 * Prepare MySQL Server (Look at MySQL-Server script)
+* Copy or Rename `database.conf.example` to `database.conf` and add Credentials for your Database User
 * Start Mail Coach server with `node server.js` for development or `pm2 start server` for production use
-* Start using Mail Coach on `Server-IP:3000`
+* Start using Mail Coach with all your Friends on `http://Server-IP:3000`
+* You can monitor your System with `pm2 monit`
+
+### Reverse Proxy
+If you want to make your Mail Coach Server available to the Internet, you should use a NGINX Reverse Proxy to redirect the traffic to port 3000. This can be done on the same host or on another server in the network.
