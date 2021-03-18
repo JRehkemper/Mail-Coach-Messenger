@@ -302,6 +302,7 @@ io.on('connection', (socket) => {
         //Prevent common Error from logging
         if (err.code != "ER_DUP_ENTRY")
         {
+	  console.log(currentTimestamp() + "ERROT - at ", sql, " ", val);
           console.log(currentTimestamp() + "ERROR - execute sql error:", err);
         }
       }
