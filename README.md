@@ -22,7 +22,7 @@ Mail Coach is an Open Source Messanger based on Socket.IO and Node JS. You can r
 * Install PM2(`npm install pm2 -g`)
 * Install Requirements of Node(`npm i`)
 * Clone Git Repository
-* Prepare MySQL Server (Look at MySQL-Server script)
+* Prepare MySQL Server (Look at `ChatDB-SQL.txt` script)
 * Copy or Rename `database.conf.example` to `database.conf` and add Credentials for your Database User
 * Start Mail Coach server with `node server.js` for development or `pm2 start server.js` for production use
 * Start using Mail Coach with all your Friends on `http://Server-IP:3000`
