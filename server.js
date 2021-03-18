@@ -54,17 +54,24 @@ readCreds();
 //Prepare Database connection
 var con = mysql.createConnection({
   host: creds[0],
+  port: 3306,
   user: creds[1],
   password: creds[2],
   database: creds[3],
   charset: 'utf8mb4',
-  insecureAuth: false
+  insecureAuth: true
 });
 
 //Create Database connection
 con.connect(function (err) {
-  if (err);
+  if (err)
+  {
+    console.log(currentTimestamp()+"ERROR - Database Connection failed: "+err);
+    console.log(currentTimestamp()+"DEBUG - Connection: "+creds[0]+", "+creds[1]+", "+creds[2]+", "+creds[3]);
+  }
+  else {
   console.log(currentTimestamp() + "INFO - Connected to Database!");
+  }
 });
 
 //Serve content of Publi Filder
