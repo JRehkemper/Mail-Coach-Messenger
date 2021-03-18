@@ -322,11 +322,6 @@
             delay: 900,
         });
 
-        if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-            console.info("This page is reloaded");
-            socket.emit('refresh');
-        }
-
         //If Message send -> Emit Event to server
         form.addEventListener('submit', function (e) {
             e.preventDefault();
