@@ -29,7 +29,7 @@ Mail Coach is an Open Source Messanger based on Socket.IO and Node JS. You can r
 * You can monitor your System with `pm2 monit`
 
 ### Reverse Proxy
-If you want to make your Mail Coach Server available to the Internet, you should use a NGINX Reverse Proxy to redirect the traffic to port 3000. This can be done on the same host or on another server in the network.
-More on that topic:
-German: https://blog.jrehkemper.de/index.php/2020/12/17/nginx-reverse-proxy/
+If you want to make your Mail Coach Server available to the Internet, you should use a NGINX Reverse Proxy to redirect the traffic to port 3000. This can be done on the same host or on another server in the network.  
+More on that topic:  
+German: https://blog.jrehkemper.de/index.php/2020/12/17/nginx-reverse-proxy/  
 English: https://blog.jrehkemper.de/index.php/en/2021/03/18/nginx-webserver/
