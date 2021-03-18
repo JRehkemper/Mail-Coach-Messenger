@@ -20,6 +20,7 @@ Mail Coach is an Open Source Messanger based on Socket.IO and Node JS. You can r
 * Install NodeJS(`apt install nodejs`) 
 * Install NPM(`apt install npm`) 
 * Install PM2(`npm install pm2 -g`)
+* Install Requirements of Node(`npm i`)
 * Clone Git Repository
 * Prepare MySQL Server (Look at MySQL-Server script)
 * Copy or Rename `database.conf.example` to `database.conf` and add Credentials for your Database User
