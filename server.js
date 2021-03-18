@@ -73,11 +73,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 //Return HTML to Reqeusts
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
-  console.log(currentTimestamp() + "INFO - recieved Get Request");
-  console.log(currentTimestamp() + "INFO - "+req.cookies['username']);
   reqRoom = req.cookies['room'];
   username = req.cookies['username'];
-  console.log(currentTimestamp() + "INFO - "+reqRoom);
   if (reqRoom == null) {
     reqRoom = "main";
   }
@@ -121,7 +118,7 @@ http.listen(3000, () => {
 io.on('connection', (socket) => {
   //Join User in Requested Room from Cookie
   socket.join(reqRoom);
-  console.log(currentTimestamp() + 'INFO - '+username+' connected ' + socket.id);
+  console.log(currentTimestamp() + 'INFO - '+username+' connected on Socket '+socket.id+' to Room '+reqRoom);
   //Emit connection event to all others in the room
   io.sockets.emit('connection', username, reqRoom);
   //Insert User in Usertable
@@ -137,7 +134,7 @@ io.on('connection', (socket) => {
 
   //Listen for disonnect Events
   socket.on('disconnect', (reason) => {
-    console.log(currentTimestamp() + 'INFO - a user left ' +socket.id + ' ' +reason);
+    console.log(currentTimestamp() + 'INFO - '+username+' left Room '+reqRoom+' on Socket ' +socket.id + ' because of ' +reason);
     //Emit disconnect Event to all others in Room
     io.sockets.in(reqRoom).emit('disconnected', username, reqRoom);
     //Delete User from Usertable
@@ -153,7 +150,7 @@ io.on('connection', (socket) => {
 
     //Emit Message to Users in Room
     io.sockets.in(proomname).emit('chat message', msg, username, proomname);
-    console.log(currentTimestamp() + 'INFO - chat message: ' + proomname + " " + msg + " " + socket.id);
+    console.log(currentTimestamp() + 'INFO - chat message: ' + username + ': "' + msg + '" in Room: ' + proomname);
     //SQL Prevention (optional)
     if(msg.toLowerCase().includes("delete") || msg.toLowerCase().includes("remove"))
     {
@@ -173,7 +170,7 @@ io.on('connection', (socket) => {
     socket.join(roomName);
     //Inform others in room about connection
     socket.in(roomName).emit('connection');
-    console.log(currentTimestamp() + "INFO - New Room created " + roomName);
+    console.log(currentTimestamp() + "INFO - New Room created: " + roomName);
     //SQL prevention
     if (roomName.toLowerCase().includes("delete") || roomName.toLowerCase().includes("remove"))
     {
@@ -227,7 +224,7 @@ io.on('connection', (socket) => {
           //Inform Client about successful join
           socket.emit("joinRoomSuccess", roomName);
           socket.in(roomName).emit('connection', username, roomName);
-          console.log(currentTimestamp() + "INFO - Room joined");
+          console.log(currentTimestamp() + "INFO - User "+username+" joined to Room "+roomName+" from Room "+oldRoom);
           //Update Database with new room
           joinRoomSQL(roomName);
           var sql = "UPDATE User SET Room = ? WHERE SocketID = ?;";
@@ -248,13 +245,17 @@ io.on('connection', (socket) => {
               if (result == true)
               {
                 socket.join(roomName);
+                if (counter == 0)
+                {
                 socket.emit("joinRoomSuccess", roomName);
                 socket.in(roomName).emit('connection', roomName, username);
-                console.log(currentTimestamp() + "INFO - Room joined Successful");
+                console.log(currentTimestamp() + "INFO - "+username+" joined Successful to "+roomName);
                 var sql = "UPDATE User SET Room = ? WHERE SocketID = ?;";
                 var val = [roomName, socket.id];
                 executeSQL(sql,val);
                 roomSet();
+                }
+                counter++;
               }
               //wrong password -> Inform client
               else if (result == false)
@@ -264,7 +265,7 @@ io.on('connection', (socket) => {
                 {
                   socket.emit("joinRoomFailed");
                   counter ++;
-                  console.log(currentTimestamp() + "WARNING - Wrong Password for Room "+roomName);
+                  console.log(currentTimestamp() + "WARNING - Wrong Password for Room "+roomName+" from User "+username);
                 }
               }
             })
@@ -348,7 +349,7 @@ io.on('connection', (socket) => {
 
       Object.keys(rows).forEach(function(key) {
         var row = rows[key];
-        console.log(currentTimestamp() + "DEBUG - Row.result "+row.Logging);
+        //console.log(currentTimestamp() + "DEBUG - Row.result "+row.Logging);
         returnValue = row.Logging;
       });
       //logging enabled -> Insert message into Database
