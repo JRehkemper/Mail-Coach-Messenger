@@ -1,6 +1,6 @@
-#"CREATE USER 'username'@'Server-IP' identified with mysql_native_password by 'password';"
+"CREATE USER 'username'@'Server-IP' identified with mysql_native_password by 'password';"
 "CREATE DATABASE `chatdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-#"GRANT ALL PRIVILEGES ON *.* TO 'username'@'%';"
+"GRANT ALL PRIVILEGES ON *.* TO 'username'@'%';"
 "CREATE TABLE `Rooms` (`ID` int NOT NULL AUTO_INCREMENT, `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `Room` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL, `Logging` tinyint(1) NOT NULL, `Password` varchar(100) DEFAULT NULL, `Users` int DEFAULT NULL, PRIMARY KEY (`ID`), UNIQUE KEY `Rooms_UN` (`Room`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;"
 "CREATE TABLE `User` (`ID` int NOT NULL AUTO_INCREMENT, `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `Name` varchar(100) NOT NULL, `SocketID` varchar(100) DEFAULT NULL, `Room` varchar(100) DEFAULT NULL, PRIMARY KEY (`ID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;"
 "CREATE TABLE `mainMessage` (`ID` int NOT NULL AUTO_INCREMENT, `Timestamp1` timestamp NULL DEFAULT CURRENT_TIMESTAMP, `User` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `Message` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, PRIMARY KEY (`ID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
