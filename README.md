@@ -1,14 +1,14 @@
-# Mail Coach | Messanger for the Web
-Mail Coach is an Open Source Messanger based on Socket.IO and Node JS.   
+# Mail Coach | Messenger for the Web
+Mail Coach is an Open Source Messenger based on Socket.IO and Node JS.   
 You can even run the Server on a small host, like a Raspberry Pi and use it with every Webbrowser.  
   
 You can test our own Mail Coach Server as a [Live Demo here](https://chat.bigosigos.de)
 
 ## Features
 * Login with Username
-* Send Messages to all Users in your Room
+* Send Messeges to all Users in your Room
 * Create new Room
-* Disable logging of Messages in a Room for better privacy
+* Disable logging of Messeges in a Room for better privacy
 * Secure your Room with a Password
 * User Simley Picker for better Communitcation
 * Usable in Webbrowser on PC and Mobile
