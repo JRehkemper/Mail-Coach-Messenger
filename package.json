@@ -7,12 +7,13 @@
     "bootstrap": "^4.6.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.0",
     "line-reader": "^0.4.0",
     "mysql": "github:mysqljs/mysql",
-    "pm2": "^4.5.5",
+    "netmask": "^2.0.1",
+    "pac-resolver": "^4.2.0",
     "popper": "^1.0.1",
     "popper.js": "^1.16.1",
-    "socket.io": "^3.1.0"
+    "socket.io": "^4.0.1"
   }
 }
